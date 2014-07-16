@@ -1,9 +1,11 @@
-Akka CQL Client
+Cql-v3  Native Protocol Parser
 ===============
 
 Incompletion!!
 ============
 
-akka IO based Cassandra(2.1~)Binary Protocol Client
+Protocol Specification
+https://github.com/apache/cassandra/blob/trunk/doc/native_protocol_v3.spec
 
+respond ByteBuffer to JavaObject, JavaObject to ByteBuffer Library
 
