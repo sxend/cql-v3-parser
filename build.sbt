@@ -11,6 +11,6 @@ libraryDependencies ++= Seq(
   "org.xerial.snappy" % "snappy-java" % "1.1.0.1"
 )
 
-publishTo := Some(Resolver.file("hello",file(Path.userHome.absolutePath + "/maven-repo"))(Patterns(true, Resolver.mavenStyleBasePattern)))
+publishTo := Some(Resolver.file("", file(Path.userHome.absolutePath + "/maven-repo"))(Patterns(true, Resolver.mavenStyleBasePattern)))
 
 javacOptions ++= Seq("-source", "1.7")
