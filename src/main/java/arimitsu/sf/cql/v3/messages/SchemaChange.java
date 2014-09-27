@@ -30,8 +30,8 @@ public class SchemaChange implements Result, Event {
     }
 
     @Override
-    public Kind getKind() {
-        return Kind.SCHEMA_CHANGE;
+    public ResultKind getResultKind() {
+        return ResultKind.SCHEMA_CHANGE;
     }
 
     public static SchemaChange fromBuffer(ByteBuffer buffer) {

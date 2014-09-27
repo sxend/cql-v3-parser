@@ -30,10 +30,6 @@ public class MapType implements ColumnType {
         this.valueType = valueType;
     }
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.MAP;
-    }
 
     @Override
     public Parser<Map<Object, Object>> getParser() {

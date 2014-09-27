@@ -13,10 +13,6 @@ public class TimestampType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.TIMESTAMP;
-    }
 
     @Override
     public Parser<?> getParser() {

@@ -11,10 +11,6 @@ public class DoubleType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.DOUBLE;
-    }
 
     @Override
     public Parser<?> getParser() {

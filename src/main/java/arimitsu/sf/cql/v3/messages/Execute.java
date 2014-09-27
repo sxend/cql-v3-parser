@@ -12,7 +12,7 @@ import static arimitsu.sf.cql.v3.util.Notation.short2Bytes;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Execute implements Request {
+public class Execute implements Request<Result> {
     public final short streamId;
     public final Flags flags;
     public final byte[] id;

@@ -11,10 +11,6 @@ public class IntType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.INT;
-    }
 
     @Override
     public Parser<Integer> getParser() {

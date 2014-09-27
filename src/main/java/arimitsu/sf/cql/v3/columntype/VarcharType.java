@@ -12,10 +12,6 @@ public class VarcharType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.VARCHAR;
-    }
 
     @Override
     public Parser<?> getParser() {

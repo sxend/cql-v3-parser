@@ -14,10 +14,6 @@ public class InetType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.INET;
-    }
 
     @Override
     public Parser<?> getParser() {

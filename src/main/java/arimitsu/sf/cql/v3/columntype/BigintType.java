@@ -11,10 +11,6 @@ public class BigintType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.BIGINT;
-    }
 
     @Override
     public Parser<?> getParser() {

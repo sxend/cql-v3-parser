@@ -11,10 +11,6 @@ public class BooleanType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.BOOLEAN;
-    }
 
     @Override
     public Parser<?> getParser() {

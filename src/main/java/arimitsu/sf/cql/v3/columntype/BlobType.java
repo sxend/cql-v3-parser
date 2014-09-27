@@ -13,10 +13,6 @@ public class BlobType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.BLOB;
-    }
 
     @Override
     public Parser<?> getParser() {

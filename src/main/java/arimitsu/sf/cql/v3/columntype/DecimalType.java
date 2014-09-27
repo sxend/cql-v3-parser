@@ -17,10 +17,6 @@ public class DecimalType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.DECIMAL;
-    }
 
     @Override
     public Parser<?> getParser() {

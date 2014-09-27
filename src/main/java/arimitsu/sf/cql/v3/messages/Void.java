@@ -12,8 +12,8 @@ public class Void implements Result {
     }
 
     @Override
-    public Kind getKind() {
-        return Kind.VOID;
+    public ResultKind getResultKind() {
+        return ResultKind.VOID;
     }
 
     public static Void fromBuffer(ByteBuffer buffer) {

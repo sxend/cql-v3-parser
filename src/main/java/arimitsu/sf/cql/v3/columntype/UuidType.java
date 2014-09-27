@@ -15,10 +15,6 @@ public class UuidType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.UUID;
-    }
 
     @Override
     public Parser<?> getParser() {

@@ -26,10 +26,6 @@ public class SetType implements ColumnType {
         this.valueType = valueType;
     }
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.SET;
-    }
 
     @Override
     public Parser<Set<Object>> getParser() {

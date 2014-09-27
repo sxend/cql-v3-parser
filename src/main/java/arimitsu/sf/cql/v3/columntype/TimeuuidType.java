@@ -15,10 +15,6 @@ public class TimeuuidType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.TIMEUUID;
-    }
 
     @Override
     public Parser<?> getParser() {

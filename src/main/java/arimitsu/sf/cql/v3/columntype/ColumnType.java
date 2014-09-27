@@ -9,15 +9,13 @@ import java.nio.ByteBuffer;
  * Created by sxend on 14/06/14.
  */
 public interface ColumnType {
-    ColumnTypeEnum getEnum();
 
     Parser<?> getParser();
 
     public static class Factory {
         public static ColumnType fromBuffer(ByteBuffer buffer) {
-            short id = Notation.getShort(buffer);
-            ColumnTypeEnum typeEnum = ColumnTypeEnum.valueOf(id);
-            switch (typeEnum) {
+            ColumnTypeEnum columnTypeEnum = ColumnTypeEnum.valueOf(Notation.getShort(buffer));
+            switch (columnTypeEnum) {
                 case ASCII:
                     return new AsciiType();
                 case BIGINT:
@@ -63,7 +61,7 @@ public interface ColumnType {
         }
     }
 
-    public static enum ColumnTypeEnum {
+    static enum ColumnTypeEnum {
         CUSTOM(0x0000),
         ASCII(0x0001),
         BIGINT(0x0002),
@@ -92,8 +90,8 @@ public interface ColumnType {
         }
 
         public static ColumnTypeEnum valueOf(short id) {
-            for (ColumnTypeEnum cType : values()) {
-                if (cType.id == id) return cType;
+            for (ColumnTypeEnum columnTypeEnum : values()) {
+                if (columnTypeEnum.id == id) return columnTypeEnum;
             }
             throw new RuntimeException("invalid id.");
         }

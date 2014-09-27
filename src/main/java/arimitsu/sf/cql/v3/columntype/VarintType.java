@@ -15,10 +15,6 @@ public class VarintType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.VARINT;
-    }
 
     @Override
     public Parser<?> getParser() {

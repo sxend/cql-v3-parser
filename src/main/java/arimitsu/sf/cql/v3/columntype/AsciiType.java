@@ -15,10 +15,6 @@ public class AsciiType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.ASCII;
-    }
 
     @Override
     public Parser<?> getParser() {

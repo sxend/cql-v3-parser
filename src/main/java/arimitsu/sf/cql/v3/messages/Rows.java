@@ -23,8 +23,8 @@ public class Rows implements Result {
     }
 
     @Override
-    public Kind getKind() {
-        return Result.Kind.ROWS;
+    public ResultKind getResultKind() {
+        return ResultKind.ROWS;
     }
 
     public static Rows fromBuffer(ByteBuffer buffer) {
@@ -34,7 +34,7 @@ public class Rows implements Result {
         for (int i = 0; i < rowsCount; i++) {
             List<Column> columns = new ArrayList<>();
             for (int j = 0, columnCount = metadata.columnsCount; j < columnCount; j++) {
-                ColumnSpec columnSpec = metadata.columnSpec.get(j);
+                ColumnSpec columnSpec = metadata.columnSpecList.get(j);
                 Object result = columnSpec.columnType.getParser().parse(buffer);
                 columns.add(new Column(columnSpec.columnName, result));
             }

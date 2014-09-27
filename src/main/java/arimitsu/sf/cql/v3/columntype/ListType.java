@@ -26,10 +26,6 @@ public class ListType implements ColumnType {
         this.valueType = valueType;
     }
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.LIST;
-    }
 
     @Override
     public Parser<List<Object>> getParser() {

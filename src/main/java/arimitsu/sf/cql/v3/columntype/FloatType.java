@@ -11,10 +11,6 @@ public class FloatType implements ColumnType {
         }
     };
 
-    @Override
-    public ColumnTypeEnum getEnum() {
-        return ColumnTypeEnum.FLOAT;
-    }
 
     @Override
     public Parser<?> getParser() {

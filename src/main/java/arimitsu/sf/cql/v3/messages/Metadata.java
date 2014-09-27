@@ -18,14 +18,14 @@ public class Metadata {
     public final int columnsCount;
     public final byte[] pagingState;
     public final Map<String, String> globalTableSpec;
-    public final List<ColumnSpec> columnSpec;
+    public final List<ColumnSpec> columnSpecList;
 
-    public Metadata(int flags, int columnsCount, byte[] pagingState, Map<String, String> globalTableSpec, List<ColumnSpec> columnSpec) {
+    public Metadata(int flags, int columnsCount, byte[] pagingState, Map<String, String> globalTableSpec, List<ColumnSpec> columnSpecList) {
         this.flags = flags;
         this.columnsCount = columnsCount;
         this.pagingState = pagingState;
         this.globalTableSpec = globalTableSpec;
-        this.columnSpec = columnSpec;
+        this.columnSpecList = columnSpecList;
     }
 
     public static Metadata fromBuffer(ByteBuffer buffer) {

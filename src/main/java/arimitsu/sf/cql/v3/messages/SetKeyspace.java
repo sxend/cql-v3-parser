@@ -17,8 +17,8 @@ public class SetKeyspace implements Result {
     }
 
     @Override
-    public Kind getKind() {
-        return Kind.SET_KEYSPACE;
+    public ResultKind getResultKind() {
+        return ResultKind.SET_KEYSPACE;
     }
 
     public static SetKeyspace fromBuffer(ByteBuffer buffer) {

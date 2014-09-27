@@ -20,8 +20,8 @@ public class Prepared implements Result {
     }
 
     @Override
-    public Kind getKind() {
-        return Kind.PREPARED;
+    public ResultKind getResultKind() {
+        return ResultKind.PREPARED;
     }
 
     public static Prepared fromBuffer(ByteBuffer buffer) {
