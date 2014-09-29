@@ -5,6 +5,7 @@ dependencies:
     - ~/.m2
   pre:
     - mkdir -p ~/.bintray && envsubst < .credentials > ~/.bintray/.credentials
+    - java -version
 machine:
   java:
     version: oraclejdk8
