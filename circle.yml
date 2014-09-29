@@ -7,7 +7,7 @@ dependencies:
     - mkdir -p ~/.bintray && envsubst < .credentials > ~/.bintray/.credentials
 machine:
   java:
-    version: oraclejdk7
+    version: oraclejdk8
 deployment:
   release:
     branch: master
