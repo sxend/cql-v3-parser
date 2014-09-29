@@ -1,6 +1,10 @@
 package arimitsu.sf.cql.v3;
 
 
+import arimitsu.sf.cql.v3.compressor.LZ4Compressor;
+import arimitsu.sf.cql.v3.compressor.NoOpCompressor;
+import arimitsu.sf.cql.v3.compressor.SnappyCompressor;
+
 /**
  * Created by sxend on 14/06/08.
  */

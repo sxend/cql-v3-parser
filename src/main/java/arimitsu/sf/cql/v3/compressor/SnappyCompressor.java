@@ -1,5 +1,6 @@
-package arimitsu.sf.cql.v3;
+package arimitsu.sf.cql.v3.compressor;
 
+import arimitsu.sf.cql.v3.Compressor;
 import org.xerial.snappy.Snappy;
 
 import java.io.IOException;

@@ -1,4 +1,6 @@
-package arimitsu.sf.cql.v3;
+package arimitsu.sf.cql.v3.compressor;
+
+import arimitsu.sf.cql.v3.Compressor;
 
 /**
  * Created by sxend on 2014/07/30.

@@ -1,5 +1,6 @@
-package arimitsu.sf.cql.v3;
+package arimitsu.sf.cql.v3.compressor;
 
+import arimitsu.sf.cql.v3.Compressor;
 import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4FastDecompressor;
 

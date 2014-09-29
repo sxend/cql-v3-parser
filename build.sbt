@@ -1,18 +1,32 @@
+import bintray.Keys._
+
 organization := "arimitsu.sf"
 
 name := "cql-v3-parser"
 
-version := "0.0.2-SNAPSHOT"
+version := "0.0.1-001"
 
 scalaVersion := "2.11.2"
 
 crossScalaVersions := Seq("2.10.4", "2.11.2")
+
+resolvers += "sxend repo releases" at "http://dl.bintray.com/sxend/releases"
+
+resolvers += "sxend repo snapshots" at "http://dl.bintray.com/sxend/snapshots"
 
 libraryDependencies ++= Seq(
   "net.jpountz.lz4" % "lz4" % "1.2.0",
   "org.xerial.snappy" % "snappy-java" % "1.1.0.1"
 )
 
-publishTo := Some(Resolver.file("", file(Path.userHome.absolutePath + "/maven-repo"))(Patterns(true, Resolver.mavenStyleBasePattern)))
+publishMavenStyle := true
+
+Seq(bintraySettings:_*)
+
+repository in bintray := {
+  if (version.value.matches("^[0-9]\\.[0-9]*\\.[0-9]*$")) "releases" else "snapshots"
+}
+
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 javacOptions ++= Seq("-source", "1.7")
