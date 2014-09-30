@@ -13,6 +13,6 @@ deployment:
   release:
     branch: master
     commands:
-      - sbt --version
+      - sbt sbt-version
       - sbt clean +compile +package +publish
 #      - sbt +publish
