@@ -14,7 +14,7 @@ deployment:
     branch: master
     commands:
       - ls -al `which javadoc`
-      - ls -al `which javac`
+      - ls -al `which javac` && javac -version
       - sbt sbt-version
       - sbt clean +compile +package +publish
 #      - sbt +publish
