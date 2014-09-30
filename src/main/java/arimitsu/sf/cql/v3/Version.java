@@ -9,9 +9,13 @@ import java.util.Map;
  * Cql Request/Response protocol version
  */
 public enum Version {
-    // Request frame for this protocol version
+    /**
+     * Request frame for this protocol version
+     */
     REQUEST(0x3),
-    // Response frame for this protocol version
+    /**
+     * Response frame for this protocol version
+     */
     RESPONSE(0x83),;
     public final byte number;
 
