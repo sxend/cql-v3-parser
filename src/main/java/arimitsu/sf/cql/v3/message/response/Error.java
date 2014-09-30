@@ -1,5 +1,6 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.response;
 
+import arimitsu.sf.cql.v3.message.ErrorCodes;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;

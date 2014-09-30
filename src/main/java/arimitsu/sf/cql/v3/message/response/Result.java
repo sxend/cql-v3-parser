@@ -1,4 +1,7 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.response;
+
+import arimitsu.sf.cql.v3.message.*;
+import arimitsu.sf.cql.v3.message.Void;
 
 import java.nio.ByteBuffer;
 
@@ -14,7 +17,7 @@ public interface Result {
             ResultKind kind = ResultKind.valueOf(code);
             switch (kind) {
                 case VOID:
-                    return (Void) Void.fromBuffer(buffer);
+                    return (arimitsu.sf.cql.v3.message.Void) Void.fromBuffer(buffer);
                 case ROWS:
                     return (Rows) Rows.fromBuffer(buffer);
                 case PREPARED:

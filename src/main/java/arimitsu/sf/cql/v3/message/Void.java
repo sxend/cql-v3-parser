@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.message;
 
+import arimitsu.sf.cql.v3.message.response.Result;
+
 import java.nio.ByteBuffer;
 
 /**

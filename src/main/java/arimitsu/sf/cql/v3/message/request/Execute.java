@@ -1,10 +1,13 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.request;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
+import arimitsu.sf.cql.v3.message.QueryParameters;
+import arimitsu.sf.cql.v3.message.Request;
+import arimitsu.sf.cql.v3.message.response.Result;
 
 import static arimitsu.sf.cql.v3.util.Notations.join;
 import static arimitsu.sf.cql.v3.util.Notations.short2Bytes;

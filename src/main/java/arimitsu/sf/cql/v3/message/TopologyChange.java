@@ -1,5 +1,6 @@
 package arimitsu.sf.cql.v3.message;
 
+import arimitsu.sf.cql.v3.message.response.Event;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.net.InetAddress;
