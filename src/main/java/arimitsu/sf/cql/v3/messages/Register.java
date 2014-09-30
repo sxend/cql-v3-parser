@@ -2,7 +2,7 @@ package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
-import arimitsu.sf.cql.v3.Header;
+import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 import arimitsu.sf.cql.v3.util.Notation;
@@ -25,6 +25,7 @@ public class Register implements Request {
 
     @Override
     public Frame toFrame() {
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.REGISTER), Notation.toStringList(events));
+        byte[] body = Notation.toStringList(events);
+        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.REGISTER, body.length), body);
     }
 }

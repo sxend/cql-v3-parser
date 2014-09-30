@@ -2,7 +2,7 @@ package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
-import arimitsu.sf.cql.v3.Header;
+import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 import arimitsu.sf.cql.v3.util.Notation;
@@ -43,6 +43,7 @@ public class Query implements Request {
     public Frame toFrame() {
         byte[] query = Notation.toLongString(this.string);
         byte[] parameters = this.parameters.toBytes();
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.QUERY), Notation.join(query, parameters));
+        byte[] body = Notation.join(query, parameters);
+        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.QUERY, body.length), body);
     }
 }

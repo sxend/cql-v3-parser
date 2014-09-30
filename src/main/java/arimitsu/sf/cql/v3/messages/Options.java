@@ -3,7 +3,7 @@ package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
-import arimitsu.sf.cql.v3.Header;
+import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 
@@ -21,7 +21,7 @@ public class Options implements Request {
 
     @Override
     public Frame toFrame() {
-        return new Frame(new Header(Version.REQUEST, this.flags, this.streamId, Opcode.OPTIONS), null);
+        return new Frame(new Header(Version.REQUEST, this.flags, this.streamId, Opcode.OPTIONS, Frame.EMPTY_BODY.length), Frame.EMPTY_BODY);
     }
 
 }

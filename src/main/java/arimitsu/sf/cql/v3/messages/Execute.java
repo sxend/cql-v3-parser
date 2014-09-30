@@ -2,7 +2,7 @@ package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
-import arimitsu.sf.cql.v3.Header;
+import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 
@@ -28,6 +28,7 @@ public class Execute implements Request<Result> {
     @Override
     public Frame toFrame() {
         byte[] paramBytes = parameters.toBytes();
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.EXECUTE), join(join(short2Bytes((short) id.length), id), paramBytes));
+        byte[] body = join(join(short2Bytes((short) id.length), id), paramBytes);
+        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.EXECUTE, body.length), body);
     }
 }

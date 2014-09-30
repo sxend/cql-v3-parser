@@ -2,7 +2,7 @@ package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
-import arimitsu.sf.cql.v3.Header;
+import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 import arimitsu.sf.cql.v3.util.Notation;
@@ -29,7 +29,7 @@ public class Startup implements Request {
     @Override
     public Frame toFrame() {
         byte[] body = Notation.toStringMap(options);
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.STARTUP), body);
+        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.STARTUP, body.length), body);
     }
 
 }

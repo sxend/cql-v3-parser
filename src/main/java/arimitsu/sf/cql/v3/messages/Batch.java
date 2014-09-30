@@ -2,7 +2,7 @@ package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Flags;
 import arimitsu.sf.cql.v3.Frame;
-import arimitsu.sf.cql.v3.Header;
+import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 
@@ -20,7 +20,7 @@ public class Batch implements Request {
 
     @Override
     public Frame toFrame() {
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.BATCH), null);
+        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.BATCH, Frame.EMPTY_BODY.length), Frame.EMPTY_BODY);
     }
 
     public static enum BatchType {

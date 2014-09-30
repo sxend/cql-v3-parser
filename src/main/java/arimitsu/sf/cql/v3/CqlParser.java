@@ -2,6 +2,8 @@ package arimitsu.sf.cql.v3;
 
 import java.nio.ByteBuffer;
 
+import arimitsu.sf.cql.v3.Frame.Header;
+
 /**
  * Created by sxend on 2014/07/25.
  */
@@ -18,8 +20,8 @@ public class CqlParser {
         byte flags = buffer.get();
         short streamId = buffer.getShort();
         byte opcode = buffer.get();
-        Header header = new Header(Version.valueOf(version), Flags.valueOf(flags), streamId, Opcode.valueOf(opcode));
         int length = buffer.getInt();
+        Header header = new Header(Version.valueOf(version), Flags.valueOf(flags), streamId, Opcode.valueOf(opcode), length);
         byte[] bytes = new byte[length];
         buffer.get(bytes);
         switch (header.flags) {
@@ -51,7 +53,7 @@ public class CqlParser {
 
     public ByteBuffer unparse(Frame frame) {
         Header header = frame.header;
-        int length = frame.length;
+        int length = frame.header.length;
         byte[] bytes = frame.body;
         if (frame.body != null) {
             switch (frame.header.flags) {
