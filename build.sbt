@@ -21,12 +21,12 @@ libraryDependencies ++= Seq(
 
 publishMavenStyle := true
 
-Seq(bintraySettings:_*)
+Seq(bintraySettings: _*)
 
 repository in bintray := {
   if (version.value.matches("^[0-9]\\.[0-9]*\\.[0-9]*$")) "releases" else "snapshots"
 }
 
-licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+licenses +=("MIT", url("http://opensource.org/licenses/MIT"))
 
 javacOptions ++= Seq("-source", "1.8")
