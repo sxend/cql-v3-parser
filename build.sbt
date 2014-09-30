@@ -28,3 +28,7 @@ repository in bintray := {
 }
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+
+javacOptions in Compile ++= Seq("-source", "1.8",  "-target", "1.8")
+
+javacOptions in doc ++= Seq("-source", "1.8")
