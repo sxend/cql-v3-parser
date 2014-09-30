@@ -1,5 +1,6 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.response.result;
 
+import arimitsu.sf.cql.v3.message.response.Metadata;
 import arimitsu.sf.cql.v3.message.response.Result;
 import arimitsu.sf.cql.v3.util.Notations;
 

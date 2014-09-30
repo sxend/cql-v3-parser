@@ -1,5 +1,6 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.response.event;
 
+import arimitsu.sf.cql.v3.message.response.result.ResultKind;
 import arimitsu.sf.cql.v3.message.response.Event;
 import arimitsu.sf.cql.v3.message.response.Result;
 import arimitsu.sf.cql.v3.util.Notations;

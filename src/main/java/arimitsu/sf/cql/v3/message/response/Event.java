@@ -1,9 +1,9 @@
 package arimitsu.sf.cql.v3.message.response;
 
-import arimitsu.sf.cql.v3.message.EventType;
-import arimitsu.sf.cql.v3.message.SchemaChange;
-import arimitsu.sf.cql.v3.message.StatusChange;
-import arimitsu.sf.cql.v3.message.TopologyChange;
+import arimitsu.sf.cql.v3.message.response.event.EventType;
+import arimitsu.sf.cql.v3.message.response.event.SchemaChange;
+import arimitsu.sf.cql.v3.message.response.event.StatusChange;
+import arimitsu.sf.cql.v3.message.response.event.TopologyChange;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;

@@ -1,4 +1,4 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.response.result;
 
 /**
  * Created by sxend on 2014/07/30.

@@ -1,4 +1,4 @@
-package arimitsu.sf.cql.v3.message;
+package arimitsu.sf.cql.v3.message.request;
 
 import arimitsu.sf.cql.v3.Consistency;
 import arimitsu.sf.cql.v3.util.Notations;

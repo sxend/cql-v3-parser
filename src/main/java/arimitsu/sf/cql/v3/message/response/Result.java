@@ -1,7 +1,11 @@
 package arimitsu.sf.cql.v3.message.response;
 
-import arimitsu.sf.cql.v3.message.*;
-import arimitsu.sf.cql.v3.message.Void;
+import arimitsu.sf.cql.v3.message.response.event.SchemaChange;
+import arimitsu.sf.cql.v3.message.response.result.Prepared;
+import arimitsu.sf.cql.v3.message.response.result.ResultKind;
+import arimitsu.sf.cql.v3.message.response.result.Rows;
+import arimitsu.sf.cql.v3.message.response.result.SetKeyspace;
+import arimitsu.sf.cql.v3.message.response.result.Void;
 
 import java.nio.ByteBuffer;
 
@@ -17,7 +21,7 @@ public interface Result {
             ResultKind kind = ResultKind.valueOf(code);
             switch (kind) {
                 case VOID:
-                    return (arimitsu.sf.cql.v3.message.Void) Void.fromBuffer(buffer);
+                    return (Void) Void.fromBuffer(buffer);
                 case ROWS:
                     return (Rows) Rows.fromBuffer(buffer);
                 case PREPARED:
