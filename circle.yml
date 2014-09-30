@@ -12,5 +12,4 @@ deployment:
   release:
     branch: master
     commands:
-      - sbt clean
-      - sbt +publish
+      - sbt clean +compile +package +publish

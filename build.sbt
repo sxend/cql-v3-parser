@@ -29,4 +29,4 @@ repository in bintray := {
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
-javacOptions ++= Seq("-source", "1.7")
+javacOptions ++= Seq("-source", "1.8")
