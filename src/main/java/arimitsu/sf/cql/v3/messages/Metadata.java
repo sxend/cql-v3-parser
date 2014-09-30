@@ -1,7 +1,7 @@
 package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.columntype.ColumnType;
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -34,21 +34,21 @@ public class Metadata {
         boolean hasPagingState = (MetadataFlags.HAS_MORE_PAGES.mask & flags) > 0;
         boolean hasGlobalSetting = (MetadataFlags.GLOBAL_TABLES_SPEC.mask & flags) > 0;
         boolean hasntMetadata = (MetadataFlags.NO_METADATA.mask & flags) > 0;
-        byte[] pagingState = hasPagingState ? Notation.getBytes(buffer) : null;
+        byte[] pagingState = hasPagingState ? Notations.getBytes(buffer) : null;
         Map<String, String> globalTableSpec = new HashMap<>();
         if (hasGlobalSetting) {
-            globalTableSpec.put("KEYSPACE", Notation.getString(buffer));
-            globalTableSpec.put("TABLE_NAME", Notation.getString(buffer));
+            globalTableSpec.put("KEYSPACE", Notations.getString(buffer));
+            globalTableSpec.put("TABLE_NAME", Notations.getString(buffer));
         }
         List<ColumnSpec> columnSpec = new ArrayList<>();
         for (int i = 0; i < columnsCount; i++) {
             String keySpace = null;
             String tableName = null;
             if (!hasGlobalSetting) {
-                keySpace = Notation.getString(buffer);
-                tableName = Notation.getString(buffer);
+                keySpace = Notations.getString(buffer);
+                tableName = Notations.getString(buffer);
             }
-            String columnName = Notation.getString(buffer);
+            String columnName = Notations.getString(buffer);
             ColumnType columnType = ColumnType.Factory.fromBuffer(buffer);
             columnSpec.add(new ColumnSpec(keySpace, tableName, columnName, columnType));
         }

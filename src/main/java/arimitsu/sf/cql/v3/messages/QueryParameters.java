@@ -1,17 +1,17 @@
 package arimitsu.sf.cql.v3.messages;
 
 import arimitsu.sf.cql.v3.Consistency;
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static arimitsu.sf.cql.v3.util.Notation.int2Bytes;
-import static arimitsu.sf.cql.v3.util.Notation.join;
-import static arimitsu.sf.cql.v3.util.Notation.long2Bytes;
-import static arimitsu.sf.cql.v3.util.Notation.short2Bytes;
+import static arimitsu.sf.cql.v3.util.Notations.int2Bytes;
+import static arimitsu.sf.cql.v3.util.Notations.join;
+import static arimitsu.sf.cql.v3.util.Notations.long2Bytes;
+import static arimitsu.sf.cql.v3.util.Notations.short2Bytes;
 
 /**
  * Created by sxend on 14/06/12.
@@ -67,7 +67,7 @@ public class QueryParameters {
             byte[] result = new byte[0];
             for (Map.Entry<String, byte[]> entry : map.entrySet()) {
 
-                result = join(result, join(Notation.toString(entry.getKey()), join(int2Bytes(entry.getValue().length), entry.getValue())));
+                result = join(result, join(Notations.toString(entry.getKey()), join(int2Bytes(entry.getValue().length), entry.getValue())));
             }
             return result;
         }
@@ -81,7 +81,7 @@ public class QueryParameters {
         }
 
         public void putInt(int value) {
-            list.add(Notation.int2Bytes(value));
+            list.add(Notations.int2Bytes(value));
         }
 
         @Override

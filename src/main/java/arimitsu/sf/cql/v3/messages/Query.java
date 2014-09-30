@@ -5,7 +5,7 @@ import arimitsu.sf.cql.v3.Frame;
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 /**
  * Created by sxend on 14/06/07.
@@ -41,9 +41,9 @@ public class Query implements Request {
 
     @Override
     public Frame toFrame() {
-        byte[] query = Notation.toLongString(this.string);
+        byte[] query = Notations.toLongString(this.string);
         byte[] parameters = this.parameters.toBytes();
-        byte[] body = Notation.join(query, parameters);
+        byte[] body = Notations.join(query, parameters);
         return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.QUERY, body.length), body);
     }
 }

@@ -6,8 +6,8 @@ import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
 
-import static arimitsu.sf.cql.v3.util.Notation.join;
-import static arimitsu.sf.cql.v3.util.Notation.short2Bytes;
+import static arimitsu.sf.cql.v3.util.Notations.join;
+import static arimitsu.sf.cql.v3.util.Notations.short2Bytes;
 
 /**
  * Created by sxend on 14/06/07.

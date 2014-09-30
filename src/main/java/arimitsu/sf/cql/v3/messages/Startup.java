@@ -5,7 +5,7 @@ import arimitsu.sf.cql.v3.Frame;
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class Startup implements Request {
 
     @Override
     public Frame toFrame() {
-        byte[] body = Notation.toStringMap(options);
+        byte[] body = Notations.toStringMap(options);
         return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.STARTUP, body.length), body);
     }
 

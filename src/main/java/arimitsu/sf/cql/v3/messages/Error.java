@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.messages;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -22,6 +22,6 @@ public class Error {
     }
 
     public static Error fromBuffer(ByteBuffer buffer) {
-        return new Error(ErrorCodes.valueOf(buffer.getInt()), Notation.getString(buffer));
+        return new Error(ErrorCodes.valueOf(buffer.getInt()), Notations.getString(buffer));
     }
 }

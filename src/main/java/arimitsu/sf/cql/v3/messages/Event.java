@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.messages;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -12,7 +12,7 @@ public interface Event {
 
     public static class Factory {
         public static Event fromBuffer(ByteBuffer buffer) {
-            EventType eventType = EventType.valueOf(Notation.getString(buffer));
+            EventType eventType = EventType.valueOf(Notations.getString(buffer));
             switch (eventType) {
                 case TOPOLOGY_CHANGE:
                     return TopologyChange.fromBuffer(buffer);

@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.messages;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -22,6 +22,6 @@ public class SetKeyspace implements Result {
     }
 
     public static SetKeyspace fromBuffer(ByteBuffer buffer) {
-        return new SetKeyspace(Notation.getString(buffer));
+        return new SetKeyspace(Notations.getString(buffer));
     }
 }

@@ -15,8 +15,9 @@ import java.util.UUID;
 
 /**
  * Created by sxend on 14/06/07.
+ * describe the layout of the frame body for the messages in Section 4, we define the following
  */
-public class Notation {
+public class Notations {
 
     public static class OptionNotation<A> {
         public final short id;

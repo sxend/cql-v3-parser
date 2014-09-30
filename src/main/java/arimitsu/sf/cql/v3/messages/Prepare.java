@@ -5,7 +5,7 @@ import arimitsu.sf.cql.v3.Frame;
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.Opcode;
 import arimitsu.sf.cql.v3.Version;
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 /**
  * Created by sxend on 14/06/07.
@@ -23,7 +23,7 @@ public class Prepare implements Request {
 
     @Override
     public Frame toFrame() {
-        byte[] body = Notation.toLongString(query);
+        byte[] body = Notations.toLongString(query);
         return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.PREPARE, body.length), body);
     }
 }

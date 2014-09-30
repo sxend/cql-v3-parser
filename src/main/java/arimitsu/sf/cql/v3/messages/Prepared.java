@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.messages;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -25,6 +25,6 @@ public class Prepared implements Result {
     }
 
     public static Prepared fromBuffer(ByteBuffer buffer) {
-        return new Prepared(Notation.getShortBytes(buffer), Metadata.fromBuffer(buffer), Metadata.fromBuffer(buffer));
+        return new Prepared(Notations.getShortBytes(buffer), Metadata.fromBuffer(buffer), Metadata.fromBuffer(buffer));
     }
 }

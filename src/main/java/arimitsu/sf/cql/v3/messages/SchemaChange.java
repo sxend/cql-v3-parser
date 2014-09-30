@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.messages;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -35,7 +35,7 @@ public class SchemaChange implements Result, Event {
     }
 
     public static SchemaChange fromBuffer(ByteBuffer buffer) {
-        ChangeType changeType = ChangeType.valueOf(Notation.getString(buffer));
-        return new SchemaChange(changeType, Notation.getString(buffer), Notation.getString(buffer));
+        ChangeType changeType = ChangeType.valueOf(Notations.getString(buffer));
+        return new SchemaChange(changeType, Notations.getString(buffer), Notations.getString(buffer));
     }
 }
