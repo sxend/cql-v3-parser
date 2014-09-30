@@ -28,3 +28,7 @@ repository in bintray := {
 }
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+
+scalacOptions in (Compile,doc) := Seq("-groups", "-implicits")
+
+javacOptions in (Compile,doc) ++= Seq("-notimestamp", "-linksource")
