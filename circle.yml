@@ -20,4 +20,4 @@ deployment:
       - sbt clean +compile +package +publish
 notify:
   webhooks:
-    - url: https://webhooks.gitter.im/e/437e2f22127588784c7e
+    - url: https://webhooks.gitter.im/e/92c1b68767111142aa0b
