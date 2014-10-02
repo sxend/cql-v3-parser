@@ -30,7 +30,10 @@ public enum Flags {
 
     static {
         Map<Byte, Flags> map = new HashMap<>();
-
+        for(Flags flags: values()){
+            map.put(flags.value, flags);
+        }
+        map.put(null, NONE);
         FLAGS_MAP = Collections.unmodifiableMap(map);
     }
 
