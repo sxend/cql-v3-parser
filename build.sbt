@@ -15,6 +15,7 @@ resolvers += "sxend repo releases" at "http://dl.bintray.com/sxend/releases"
 resolvers += "sxend repo snapshots" at "http://dl.bintray.com/sxend/snapshots"
 
 libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "2.2.2" % "test",
   "net.jpountz.lz4" % "lz4" % "1.2.0",
   "org.xerial.snappy" % "snappy-java" % "1.1.0.1"
 )
