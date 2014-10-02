@@ -37,3 +37,7 @@ INSERT INTO test_table1 (id,ascii_column,decimal_column,int_column,text_column,u
              100000, 1.01, [ 'list1','list2' ] , 1402726004, 'varchar',
              0x0000000000000001, 0.1, {'map_key1':'map_value1','map_key2':'map_value2'},now(),1,
              true, '20.20.20.20',{'set_value1', 'set_value2'});
+
+CREATE TABLE done(id int PRIMARY KEY);
+
+INSERT INTO done (id) VALUES (1);
