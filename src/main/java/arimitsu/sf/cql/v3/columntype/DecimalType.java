@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.columntype;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,7 +13,7 @@ public class DecimalType implements ColumnType {
             buffer.getInt();
             int scale = buffer.getInt();
 //            byte[] bytes = Notation.getBytes(buffer,12);
-            return new BigDecimal(new BigInteger(Notation.getBytes(buffer, 4)), scale);
+            return new BigDecimal(new BigInteger(Notations.getBytes(buffer, 4)), scale);
         }
     };
 

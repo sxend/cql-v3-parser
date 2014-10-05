@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.columntype;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;
@@ -10,8 +10,8 @@ public class UuidType implements ColumnType {
         @Override
         public UUID parse(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
-            byte[] bytes = Notation.getBytes(buffer, length);
-            return Notation.toUUID(bytes);
+            byte[] bytes = Notations.getBytes(buffer, length);
+            return Notations.toUUID(bytes);
         }
     };
 

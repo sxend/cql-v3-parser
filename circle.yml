@@ -6,7 +6,11 @@ dependencies:
   pre:
     - mkdir -p ~/.bintray && envsubst < .credentials > ~/.bintray/.credentials
     - java -version
+    - cd environment && docker build -t sxend/test-cassandra .
+    - cd environment && export CONTAINER_ID=`docker run -d -t -i -p 9042:9042 sxend/test-cassandra`; export CONTAINER_IP=`docker inspect --format ' {{ .NetworkSettings.IPAddress }} ' $CONTAINER_ID` ; cd .. ;envsubst < ./environment/test.properties.template > ./src/test/resources/test.properties
 machine:
+  services:
+    - docker
   java:
     version: oraclejdk8
 deployment:
@@ -14,3 +18,6 @@ deployment:
     branch: master
     commands:
       - sbt clean +compile +package +publish
+notify:
+  webhooks:
+    - url: https://webhooks.gitter.im/e/92c1b68767111142aa0b

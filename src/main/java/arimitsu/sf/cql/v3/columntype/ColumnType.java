@@ -1,7 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -14,7 +14,7 @@ public interface ColumnType {
 
     public static class Factory {
         public static ColumnType fromBuffer(ByteBuffer buffer) {
-            ColumnTypeEnum columnTypeEnum = ColumnTypeEnum.valueOf(Notation.getShort(buffer));
+            ColumnTypeEnum columnTypeEnum = ColumnTypeEnum.valueOf(Notations.getShort(buffer));
             switch (columnTypeEnum) {
                 case ASCII:
                     return new AsciiType();
