@@ -4,7 +4,7 @@ organization := "arimitsu.sf"
 
 name := "cql-v3-parser"
 
-version := "0.0.1-002"
+version := "0.0.1-003"
 
 scalaVersion := "2.11.2"
 

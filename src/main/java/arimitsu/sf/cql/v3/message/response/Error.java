@@ -18,10 +18,6 @@ public class Error {
         this.message = message;
     }
 
-    public Throwable toThrowable() {
-        return new RuntimeException(this.code + " : " + this.message);
-    }
-
     public static Error fromBuffer(ByteBuffer buffer) {
         return new Error(ErrorCodes.valueOf(buffer.getInt()), Notations.getString(buffer));
     }
