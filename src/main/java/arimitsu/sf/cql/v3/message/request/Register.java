@@ -8,25 +8,21 @@ import arimitsu.sf.cql.v3.Version;
 import arimitsu.sf.cql.v3.message.Request;
 import arimitsu.sf.cql.v3.util.Notations;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
  * Created by sxend on 14/06/07.
  */
-public class Register implements Request {
-    public final short streamId;
-    public final Flags flags;
+public class Register extends Request {
     public final List<String> events;
 
-    public Register(short streamId, Flags flags, List<String> events) {
-        this.streamId = streamId;
-        this.flags = flags;
+    public Register(List<String> events) {
         this.events = events;
     }
 
     @Override
-    public Frame toFrame() {
-        byte[] body = Notations.toStringList(events);
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.REGISTER, body.length), body);
+    public byte[] toBody() {
+        return Notations.toStringList(events);
     }
 }

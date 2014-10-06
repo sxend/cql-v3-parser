@@ -1,5 +1,6 @@
 package arimitsu.sf.cql.v3.message.response.result;
 
+import arimitsu.sf.cql.v3.message.Response;
 import arimitsu.sf.cql.v3.message.response.Result;
 import arimitsu.sf.cql.v3.util.Notations;
 
@@ -9,12 +10,13 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 2014/06/11.
  */
-public class SetKeyspace implements Result {
+public class SetKeyspace extends Response implements Result {
 
     public final String keySpace;
 
-    public SetKeyspace(String keySpace) {
-        this.keySpace = keySpace;
+    public SetKeyspace(ByteBuffer buffer) {
+        super(buffer);
+        this.keySpace = Notations.getString(buffer);
     }
 
     @Override
@@ -22,7 +24,4 @@ public class SetKeyspace implements Result {
         return ResultKind.SET_KEYSPACE;
     }
 
-    public static SetKeyspace fromBuffer(ByteBuffer buffer) {
-        return new SetKeyspace(Notations.getString(buffer));
-    }
 }

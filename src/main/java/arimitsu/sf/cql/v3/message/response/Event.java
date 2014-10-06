@@ -19,11 +19,11 @@ public interface Event {
             EventType eventType = EventType.valueOf(Notations.getString(buffer));
             switch (eventType) {
                 case TOPOLOGY_CHANGE:
-                    return TopologyChange.fromBuffer(buffer);
+                    return new TopologyChange(buffer);
                 case STATUS_CHANGE:
-                    return StatusChange.fromBuffer(buffer);
+                    return new StatusChange(buffer);
                 case SCHEMA_CHANGE:
-                    return SchemaChange.fromBuffer(buffer);
+                    return new SchemaChange(buffer);
             }
             throw new IllegalStateException("invalid event type");
         }

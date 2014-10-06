@@ -2,6 +2,7 @@ package arimitsu.sf.cql.v3.message.response.result;
 
 
 import arimitsu.sf.cql.v3.Column;
+import arimitsu.sf.cql.v3.message.Response;
 import arimitsu.sf.cql.v3.message.response.Metadata;
 import arimitsu.sf.cql.v3.message.response.Result;
 
@@ -12,24 +13,14 @@ import java.util.List;
 /**
  * Created by sxend on 2014/06/11.
  */
-public class Rows implements Result {
+public class Rows extends Response implements Result {
     // <metadata><rows_count><rows_content>
     public final Metadata metadata;
     public final int rowsCount;
     public final List<List<Column>> rowsContent;
 
-    public Rows(Metadata metadata, int rowsCount, List<List<Column>> rowsContent) {
-        this.metadata = metadata;
-        this.rowsCount = rowsCount;
-        this.rowsContent = rowsContent;
-    }
-
-    @Override
-    public ResultKind getResultKind() {
-        return ResultKind.ROWS;
-    }
-
-    public static Rows fromBuffer(ByteBuffer buffer) {
+    public Rows(ByteBuffer buffer) {
+        super(buffer);
         Metadata metadata = Metadata.fromBuffer(buffer);
         int rowsCount = buffer.getInt();
         List<List<Column>> rowsContent = new ArrayList<>();
@@ -42,6 +33,14 @@ public class Rows implements Result {
             }
             rowsContent.add(columns);
         }
-        return new Rows(metadata, rowsCount, rowsContent);
+        this.metadata = metadata;
+        this.rowsCount = rowsCount;
+        this.rowsContent = rowsContent;
     }
+
+    @Override
+    public ResultKind getResultKind() {
+        return ResultKind.ROWS;
+    }
+
 }

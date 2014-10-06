@@ -14,23 +14,18 @@ import static arimitsu.sf.cql.v3.util.Notations.short2Bytes;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Execute implements Request<Result> {
-    public final short streamId;
-    public final Flags flags;
+public class Execute extends Request<Result> {
     public final byte[] id;
     public final QueryParameters parameters;
 
-    public Execute(short streamId, Flags flags, byte[] id, QueryParameters parameters) {
-        this.streamId = streamId;
-        this.flags = flags;
+    public Execute(byte[] id, QueryParameters parameters) {
         this.id = id;
         this.parameters = parameters;
     }
 
     @Override
-    public Frame toFrame() {
+    public byte[] toBody() {
         byte[] paramBytes = parameters.toBytes();
-        byte[] body = join(join(short2Bytes((short) id.length), id), paramBytes);
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.EXECUTE, body.length), body);
+        return join(join(short2Bytes((short) id.length), id), paramBytes);
     }
 }

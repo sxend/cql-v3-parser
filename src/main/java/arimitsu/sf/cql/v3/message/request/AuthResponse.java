@@ -10,19 +10,15 @@ import arimitsu.sf.cql.v3.message.Request;
 /**
  * Created by sxend on 14/06/07.
  */
-public class AuthResponse implements Request {
-    public final short streamId;
-    public final Flags flags;
+public class AuthResponse extends Request {
     public final byte[] token;
 
-    public AuthResponse(short streamId, Flags flags, byte[] token) {
-        this.streamId = streamId;
-        this.flags = flags;
+    public AuthResponse(byte[] token) {
         this.token = token;
     }
 
     @Override
-    public Frame toFrame() {
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.AUTH_RESPONSE, token.length), token);
+    public byte[] toBody() {
+        return token;
     }
 }

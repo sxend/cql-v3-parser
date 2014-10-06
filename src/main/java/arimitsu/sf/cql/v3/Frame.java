@@ -27,6 +27,7 @@ public class Frame {
         this.body = body;
     }
 
+
     public static class Header {
         public final Version version;
         public final Flags flags;

@@ -11,20 +11,15 @@ import arimitsu.sf.cql.v3.util.Notations;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Prepare implements Request {
-    public final short streamId;
-    public final Flags flags;
+public class Prepare extends Request {
     public final String query;
 
-    public Prepare(short streamId, Flags flags, String query) {
-        this.streamId = streamId;
-        this.flags = flags;
+    public Prepare(String query) {
         this.query = query;
     }
 
     @Override
-    public Frame toFrame() {
-        byte[] body = Notations.toLongString(query);
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.PREPARE, body.length), body);
+    public byte[] toBody() {
+        return Notations.toLongString(query);
     }
 }

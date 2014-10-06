@@ -21,15 +21,15 @@ public interface Result {
             ResultKind kind = ResultKind.valueOf(code);
             switch (kind) {
                 case VOID:
-                    return (Void) Void.fromBuffer(buffer);
+                    return (Void) new Void(buffer);
                 case ROWS:
-                    return (Rows) Rows.fromBuffer(buffer);
+                    return (Rows) new Rows(buffer);
                 case PREPARED:
-                    return (Prepared) Prepared.fromBuffer(buffer);
+                    return (Prepared) new Prepared(buffer);
                 case SET_KEYSPACE:
-                    return (SetKeyspace) SetKeyspace.fromBuffer(buffer);
+                    return (SetKeyspace) new SetKeyspace(buffer);
                 case SCHEMA_CHANGE:
-                    return (SchemaChange) SchemaChange.fromBuffer(buffer);
+                    return (SchemaChange) new SchemaChange(buffer);
             }
             throw new RuntimeException("invalid kind code.");
         }

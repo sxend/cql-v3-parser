@@ -10,18 +10,14 @@ import arimitsu.sf.cql.v3.message.Request;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Batch implements Request {
-    public final short streamId;
-    public final Flags flags;
+public class Batch extends Request {
 
-    public Batch(short streamId, Flags flags) {
-        this.streamId = streamId;
-        this.flags = flags;
+    public Batch() {
     }
 
     @Override
-    public Frame toFrame() {
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.BATCH, Frame.EMPTY_BODY.length), Frame.EMPTY_BODY);
+    public byte[] toBody() {
+        return Request.EMPTY_BODY;
     }
 
     public static enum BatchType {

@@ -11,18 +11,21 @@ import arimitsu.sf.cql.v3.util.Notations;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Query implements Request {
+public class Query extends Request {
 
-    public final short streamId;
-    public final Flags flags;
     public final String string;
     public final QueryParameters parameters;
 
-    public Query(short streamId, Flags flags, String string, QueryParameters parameters) {
-        this.streamId = streamId;
-        this.flags = flags;
+    public Query(String string, QueryParameters parameters) {
         this.string = string;
         this.parameters = parameters;
+    }
+
+    @Override
+    public byte[] toBody() {
+        byte[] query = Notations.toLongString(this.string);
+        byte[] parameters = this.parameters.toBytes();
+        return Notations.join(query, parameters);
     }
 
     public static enum QueryFlags {
@@ -40,11 +43,4 @@ public class Query implements Request {
         }
     }
 
-    @Override
-    public Frame toFrame() {
-        byte[] query = Notations.toLongString(this.string);
-        byte[] parameters = this.parameters.toBytes();
-        byte[] body = Notations.join(query, parameters);
-        return new Frame(new Header(Version.REQUEST, flags, streamId, Opcode.QUERY, body.length), body);
-    }
 }
