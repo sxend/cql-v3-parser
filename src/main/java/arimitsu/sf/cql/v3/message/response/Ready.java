@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Ready extends Response{
+public class Ready extends Response {
 
     public Ready(ByteBuffer buffer) {
         super(buffer);

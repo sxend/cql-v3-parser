@@ -1,21 +1,25 @@
 package arimitsu.sf.cql.v3;
 
-import java.nio.ByteBuffer;
-
 import arimitsu.sf.cql.v3.Frame.Header;
+import arimitsu.sf.cql.v3.compressor.NoneCompressor;
+import arimitsu.sf.cql.v3.message.Message;
+
+import java.nio.ByteBuffer;
 
 /**
  * Created by sxend on 2014/07/25.
  */
 public class CqlParser {
-    private Compression compression = Compression.NONE;
+    private BodyParser bodyParser = new BodyParser();
 
-    public CqlParser configure(Compression compression) {
-        this.compression = compression;
+    private Compressor compressor = new NoneCompressor();
+
+    public CqlParser withCompressor(Compressor compressor) {
+        this.compressor = compressor;
         return this;
     }
 
-    public Frame parse(ByteBuffer buffer) {
+    public Frame byteBufferToFrame(ByteBuffer buffer) {
         byte version = buffer.get();
         byte flags = buffer.get();
         short streamId = buffer.getShort();
@@ -27,13 +31,29 @@ public class CqlParser {
         switch (header.flags) {
             case COMPRESSION:
             case BOTH:
-                bytes = compression.compressor.decompress(bytes);
+                bytes = compressor.decompress(bytes);
                 break;
         }
         return new Frame(header, bytes);
     }
 
-    public ByteBuffer unparse(Header header, byte[] bytes, int length) {
+    public ByteBuffer frameToByteBuffer(Frame frame) {
+        Header header = frame.header;
+        int length = frame.header.length;
+        byte[] bytes = frame.body;
+        if (frame.body != null) {
+            switch (frame.header.flags) {
+                case COMPRESSION:
+                case BOTH:
+                    bytes = compressor.compress(frame.body);
+                    length = bytes.length;
+                    break;
+            }
+        }
+        return toByteBuffer(header, bytes, length);
+    }
+
+    private ByteBuffer toByteBuffer(Header header, byte[] bytes, int length) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(9 + length);
         byte[] headerBytes = new byte[9];
         headerBytes[0] = header.version.number;
@@ -51,24 +71,7 @@ public class CqlParser {
         return byteBuffer;
     }
 
-    public ByteBuffer unparse(Frame frame) {
-        Header header = frame.header;
-        int length = frame.header.length;
-        byte[] bytes = frame.body;
-        if (frame.body != null) {
-            switch (frame.header.flags) {
-                case COMPRESSION:
-                case BOTH:
-                    bytes = compression.compressor.compress(frame.body);
-                    length = compression.compressor.getCompressedLength(bytes);
-                    break;
-            }
-        }
-        return unparse(header, bytes, length);
+    public Message frameToMessage(Frame frame) {
+        return bodyParser.toMessage(frame.header.opcode, frame.body);
     }
-
-    public ByteBuffer unparseNoCompress(Frame frame) {
-        return unparse(frame.header, frame.body, frame.body != null ? frame.body.length : 0);
-    }
-
 }

@@ -2,7 +2,6 @@ package arimitsu.sf.cql.v3.message.response.result;
 
 
 import arimitsu.sf.cql.v3.Column;
-import arimitsu.sf.cql.v3.message.Response;
 import arimitsu.sf.cql.v3.message.response.Metadata;
 import arimitsu.sf.cql.v3.message.response.Result;
 
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Created by sxend on 2014/06/11.
  */
-public class Rows extends Response implements Result {
+public class Rows extends Result {
     // <metadata><rows_count><rows_content>
     public final Metadata metadata;
     public final int rowsCount;
