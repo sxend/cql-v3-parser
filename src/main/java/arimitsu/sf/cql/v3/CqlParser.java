@@ -1,6 +1,7 @@
 package arimitsu.sf.cql.v3;
 
 import arimitsu.sf.cql.v3.Frame.Header;
+import arimitsu.sf.cql.v3.compressor.NoneCompressor;
 
 import java.nio.ByteBuffer;
 
@@ -8,7 +9,7 @@ import java.nio.ByteBuffer;
  * Created by sxend on 2014/07/25.
  */
 public class CqlParser {
-    private Compressor compressor = Compression.NONE.compressor;
+    private Compressor compressor = new NoneCompressor();
 
     public CqlParser withCompressor(Compressor compressor) {
         this.compressor = compressor;

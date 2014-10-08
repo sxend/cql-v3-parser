@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 
 import arimitsu.sf.cql.v3.Frame.Header
 import arimitsu.sf.cql.v3._
+import arimitsu.sf.cql.v3.compressor.NoneCompressor
 import arimitsu.sf.cql.v3.message.request.Options
 import arimitsu.sf.cql.v3.message.response.Supported
 import org.scalatest._
@@ -18,8 +19,7 @@ class OptionsSpec extends FlatSpec with Matchers {
   "Options Response" should "be Supported" in {
     val client = ChannelManager.getInstance
     val options = new Options()
-    val parser = new CqlParser()
-    parser.configure(Compression.NONE)
+    val parser = new CqlParser().withCompressor(new NoneCompressor())
     val body = options.toBody
     val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.OPTIONS, body.length), body)
     val writeBuffer = parser.frameToByteBuffer(frame)
