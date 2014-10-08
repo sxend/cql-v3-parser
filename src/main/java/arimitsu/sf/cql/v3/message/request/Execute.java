@@ -14,7 +14,7 @@ import static arimitsu.sf.cql.v3.util.Notations.short2Bytes;
 /**
  * Created by sxend on 14/06/07.
  */
-public class Execute extends Request<Result> {
+public class Execute extends Request {
     public final byte[] id;
     public final QueryParameters parameters;
 
