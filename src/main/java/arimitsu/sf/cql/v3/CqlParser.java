@@ -71,7 +71,7 @@ public class CqlParser {
         return byteBuffer;
     }
 
-    public Message frameToMessage(Opcode opcode, byte[] body) {
-        return bodyParser.toMessage(opcode, body);
+    public Message frameToMessage(Frame frame) {
+        return bodyParser.toMessage(frame.header.opcode, frame.body);
     }
 }
