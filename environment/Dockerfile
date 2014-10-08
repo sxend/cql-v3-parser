@@ -1,4 +1,4 @@
-FROM sxend/cassandra2.1.0
+FROM sxend/cassandra2.1.0:1.0.0
 
 MAINTAINER sxend
 

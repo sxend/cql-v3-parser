@@ -3,6 +3,7 @@ dependencies:
     - ~/.sbt
     - ~/.ivy2
     - ~/.m2
+    - /var/lib/docker
   pre:
     - mkdir -p ~/.bintray && envsubst < .credentials > ~/.bintray/.credentials
     - java -version
