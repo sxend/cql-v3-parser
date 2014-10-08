@@ -13,11 +13,6 @@ public class LZ4Compressor implements Compressor {
     private static final int INTEGER_BYTE = 4;
 
     @Override
-    public int getCompressedLength(byte[] bytes) {
-        return bytes.length;
-    }
-
-    @Override
     public byte[] compress(byte[] bytes) {
         int length = bytes.length;
         LZ4Factory factory = LZ4Factory.fastestInstance();

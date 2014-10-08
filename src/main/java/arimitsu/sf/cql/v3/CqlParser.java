@@ -43,7 +43,7 @@ public class CqlParser {
                 case COMPRESSION:
                 case BOTH:
                     bytes = compressor.compress(frame.body);
-                    length = compressor.getCompressedLength(bytes);
+                    length = bytes.length;
                     break;
             }
         }
