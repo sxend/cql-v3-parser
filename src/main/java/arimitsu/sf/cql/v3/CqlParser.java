@@ -1,17 +1,17 @@
 package arimitsu.sf.cql.v3;
 
-import java.nio.ByteBuffer;
-
 import arimitsu.sf.cql.v3.Frame.Header;
+
+import java.nio.ByteBuffer;
 
 /**
  * Created by sxend on 2014/07/25.
  */
 public class CqlParser {
-    private Compression compression = Compression.NONE;
+    private Compressor compressor = Compression.NONE.compressor;
 
-    public CqlParser configure(Compression compression) {
-        this.compression = compression;
+    public CqlParser withCompressor(Compressor compressor) {
+        this.compressor = compressor;
         return this;
     }
 
@@ -27,13 +27,29 @@ public class CqlParser {
         switch (header.flags) {
             case COMPRESSION:
             case BOTH:
-                bytes = compression.compressor.decompress(bytes);
+                bytes = compressor.decompress(bytes);
                 break;
         }
         return new Frame(header, bytes);
     }
 
-    public ByteBuffer unparse(Header header, byte[] bytes, int length) {
+    public ByteBuffer frameToByteBuffer(Frame frame) {
+        Header header = frame.header;
+        int length = frame.header.length;
+        byte[] bytes = frame.body;
+        if (frame.body != null) {
+            switch (frame.header.flags) {
+                case COMPRESSION:
+                case BOTH:
+                    bytes = compressor.compress(frame.body);
+                    length = compressor.getCompressedLength(bytes);
+                    break;
+            }
+        }
+        return toByteBuffer(header, bytes, length);
+    }
+
+    private ByteBuffer toByteBuffer(Header header, byte[] bytes, int length) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(9 + length);
         byte[] headerBytes = new byte[9];
         headerBytes[0] = header.version.number;
@@ -50,25 +66,4 @@ public class CqlParser {
         byteBuffer.flip();
         return byteBuffer;
     }
-
-    public ByteBuffer frameToByteBuffer(Frame frame) {
-        Header header = frame.header;
-        int length = frame.header.length;
-        byte[] bytes = frame.body;
-        if (frame.body != null) {
-            switch (frame.header.flags) {
-                case COMPRESSION:
-                case BOTH:
-                    bytes = compression.compressor.compress(frame.body);
-                    length = compression.compressor.getCompressedLength(bytes);
-                    break;
-            }
-        }
-        return unparse(header, bytes, length);
-    }
-
-    public ByteBuffer unparseNoCompress(Frame frame) {
-        return unparse(frame.header, frame.body, frame.body != null ? frame.body.length : 0);
-    }
-
 }
