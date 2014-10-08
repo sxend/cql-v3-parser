@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 2014/06/11.
  */
-public class Void  extends Response implements Result {
+public class Void extends Response implements Result {
 
     public Void(ByteBuffer buffer) {
         super(buffer);

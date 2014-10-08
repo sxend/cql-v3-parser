@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 14/06/07.
  */
-public class AuthSuccess  extends Response {
+public class AuthSuccess extends Response {
 
     public AuthSuccess(ByteBuffer buffer) {
         super(buffer);

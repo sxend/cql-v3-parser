@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 2014/06/11.
  */
-public class Prepared  extends Response implements Result {
+public class Prepared extends Response implements Result {
     // <id><metadata><result_metadata>
     public final byte[] id;
     public final Metadata metadata;
