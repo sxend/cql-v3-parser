@@ -15,7 +15,7 @@ public class CqlParser {
         return this;
     }
 
-    public Frame parse(ByteBuffer buffer) {
+    public Frame byteBufferToFrame(ByteBuffer buffer) {
         byte version = buffer.get();
         byte flags = buffer.get();
         short streamId = buffer.getShort();
@@ -51,7 +51,7 @@ public class CqlParser {
         return byteBuffer;
     }
 
-    public ByteBuffer unparse(Frame frame) {
+    public ByteBuffer frameToByteBuffer(Frame frame) {
         Header header = frame.header;
         int length = frame.header.length;
         byte[] bytes = frame.body;
