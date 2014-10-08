@@ -2,14 +2,7 @@ package arimitsu.sf.cql.v3;
 
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.compressor.NoneCompressor;
-import arimitsu.sf.cql.v3.message.Event;
 import arimitsu.sf.cql.v3.message.Message;
-import arimitsu.sf.cql.v3.message.response.AuthSuccess;
-import arimitsu.sf.cql.v3.message.response.Authenticate;
-import arimitsu.sf.cql.v3.message.response.Error;
-import arimitsu.sf.cql.v3.message.response.Ready;
-import arimitsu.sf.cql.v3.message.response.Result;
-import arimitsu.sf.cql.v3.message.response.Supported;
 
 import java.nio.ByteBuffer;
 
@@ -17,6 +10,8 @@ import java.nio.ByteBuffer;
  * Created by sxend on 2014/07/25.
  */
 public class CqlParser {
+    private BodyParser bodyParser = new BodyParser();
+
     private Compressor compressor = new NoneCompressor();
 
     public CqlParser withCompressor(Compressor compressor) {
@@ -76,25 +71,7 @@ public class CqlParser {
         return byteBuffer;
     }
 
-    public Message frameToMessage(Frame frame) {
-        ByteBuffer buffer = ByteBuffer.wrap(frame.body);
-        switch (frame.header.opcode) {
-            case RESULT:
-                return Result.Builder.fromBuffer(buffer);
-            case EVENT:
-                return Event.Builder.fromBuffer(buffer);
-            case READY:
-                return new Ready(buffer);
-            case AUTHENTICATE:
-                return new Authenticate(buffer);
-            case AUTH_SUCCESS:
-                return new AuthSuccess(buffer);
-            case SUPPORTED:
-                return new Supported(buffer);
-            case ERROR:
-                return new Error(buffer);
-            default:
-                throw new UnsupportedOperationException("illegal opcode.");
-        }
+    public Message frameToMessage(Opcode opcode, byte[] body) {
+        return bodyParser.toMessage(opcode, body);
     }
 }
