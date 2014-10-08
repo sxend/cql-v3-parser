@@ -2,6 +2,13 @@ package arimitsu.sf.cql.v3;
 
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.compressor.NoneCompressor;
+import arimitsu.sf.cql.v3.message.Event;
+import arimitsu.sf.cql.v3.message.response.AuthSuccess;
+import arimitsu.sf.cql.v3.message.response.Authenticate;
+import arimitsu.sf.cql.v3.message.response.Error;
+import arimitsu.sf.cql.v3.message.response.Ready;
+import arimitsu.sf.cql.v3.message.response.Result;
+import arimitsu.sf.cql.v3.message.response.Supported;
 
 import java.nio.ByteBuffer;
 
@@ -66,5 +73,27 @@ public class CqlParser {
         if (bytes != null) byteBuffer.put(bytes);
         byteBuffer.flip();
         return byteBuffer;
+    }
+
+    public Object getResult(Frame frame) {
+        ByteBuffer buffer = ByteBuffer.wrap(frame.body);
+        switch (frame.header.opcode) {
+            case RESULT:
+                return Result.Builder.fromBuffer(buffer);
+            case EVENT:
+                return Event.Builder.fromBuffer(buffer);
+            case READY:
+                return new Ready(buffer);
+            case AUTHENTICATE:
+                return new Authenticate(buffer);
+            case AUTH_SUCCESS:
+                return new AuthSuccess(buffer);
+            case SUPPORTED:
+                return new Supported(buffer);
+            case ERROR:
+                return new Error(buffer);
+            default:
+                throw new UnsupportedOperationException("illegal opcode.");
+        }
     }
 }

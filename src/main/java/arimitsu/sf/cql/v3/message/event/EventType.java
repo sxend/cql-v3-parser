@@ -1,4 +1,4 @@
-package arimitsu.sf.cql.v3.message.response.event;
+package arimitsu.sf.cql.v3.message.event;
 
 /**
  * Created by sxend on 14/07/06.

@@ -1,9 +1,9 @@
-package arimitsu.sf.cql.v3.message.response;
+package arimitsu.sf.cql.v3.message;
 
-import arimitsu.sf.cql.v3.message.response.event.EventType;
-import arimitsu.sf.cql.v3.message.response.event.SchemaChange;
-import arimitsu.sf.cql.v3.message.response.event.StatusChange;
-import arimitsu.sf.cql.v3.message.response.event.TopologyChange;
+import arimitsu.sf.cql.v3.message.event.EventType;
+import arimitsu.sf.cql.v3.message.event.SchemaChange;
+import arimitsu.sf.cql.v3.message.event.StatusChange;
+import arimitsu.sf.cql.v3.message.event.TopologyChange;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
@@ -12,9 +12,9 @@ import java.nio.ByteBuffer;
  * Created by sxend on 14/06/07.
  */
 public interface Event {
-    public EventType getType();
+    public abstract EventType getType();
 
-    public static class Factory {
+    public static class Builder {
         public static Event fromBuffer(ByteBuffer buffer) {
             EventType eventType = EventType.valueOf(Notations.getString(buffer));
             switch (eventType) {

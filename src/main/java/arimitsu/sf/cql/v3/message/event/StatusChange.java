@@ -1,7 +1,6 @@
-package arimitsu.sf.cql.v3.message.response.event;
+package arimitsu.sf.cql.v3.message.event;
 
-import arimitsu.sf.cql.v3.message.Response;
-import arimitsu.sf.cql.v3.message.response.Event;
+import arimitsu.sf.cql.v3.message.Event;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.net.InetAddress;
@@ -10,13 +9,12 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 14/07/06.
  */
-public class StatusChange extends Response implements Event {
+public class StatusChange implements Event {
 
     public final ChangeType changeType;
     public final InetAddress nodeAddress;
 
     public StatusChange(ByteBuffer buffer) {
-        super(buffer);
         this.changeType = ChangeType.valueOf(Notations.getString(buffer));
         this.nodeAddress = Notations.getINet(buffer);
     }

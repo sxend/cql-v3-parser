@@ -1,6 +1,7 @@
 package arimitsu.sf.cql.v3.message.response;
 
-import arimitsu.sf.cql.v3.message.response.event.SchemaChange;
+import arimitsu.sf.cql.v3.message.Response;
+import arimitsu.sf.cql.v3.message.event.SchemaChange;
 import arimitsu.sf.cql.v3.message.response.result.Prepared;
 import arimitsu.sf.cql.v3.message.response.result.ResultKind;
 import arimitsu.sf.cql.v3.message.response.result.Rows;
@@ -12,10 +13,14 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 14/06/07.
  */
-public interface Result {
+public abstract class Result extends Response {
+    public Result(ByteBuffer buffer) {
+        super(buffer);
+    }
+
     public abstract ResultKind getResultKind();
 
-    public static class Factory {
+    public static class Builder {
         public static Result fromBuffer(ByteBuffer buffer) {
             int code = buffer.getInt();
             ResultKind kind = ResultKind.valueOf(code);
@@ -34,4 +39,5 @@ public interface Result {
             throw new RuntimeException("invalid kind code.");
         }
     }
+
 }
