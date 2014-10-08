@@ -3,6 +3,7 @@ package arimitsu.sf.cql.v3;
 import arimitsu.sf.cql.v3.Frame.Header;
 import arimitsu.sf.cql.v3.compressor.NoneCompressor;
 import arimitsu.sf.cql.v3.message.Event;
+import arimitsu.sf.cql.v3.message.Message;
 import arimitsu.sf.cql.v3.message.response.AuthSuccess;
 import arimitsu.sf.cql.v3.message.response.Authenticate;
 import arimitsu.sf.cql.v3.message.response.Error;
@@ -75,7 +76,7 @@ public class CqlParser {
         return byteBuffer;
     }
 
-    public Object getResult(Frame frame) {
+    public Message frameToMessage(Frame frame) {
         ByteBuffer buffer = ByteBuffer.wrap(frame.body);
         switch (frame.header.opcode) {
             case RESULT:

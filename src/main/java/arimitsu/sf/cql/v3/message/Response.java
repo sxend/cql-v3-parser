@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 14/09/30.
  */
-public abstract class Response {
+public abstract class Response implements Message {
     public Response(ByteBuffer buffer) {
     }
 }

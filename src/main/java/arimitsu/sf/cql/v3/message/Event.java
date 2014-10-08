@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 14/06/07.
  */
-public interface Event {
+public interface Event extends Message {
     public abstract EventType getType();
 
     public static class Builder {
