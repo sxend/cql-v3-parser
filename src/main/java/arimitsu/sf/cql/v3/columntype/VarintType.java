@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.columntype;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -10,8 +10,8 @@ public class VarintType implements ColumnType {
         @Override
         public BigDecimal parse(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
-            byte[] bytes = Notation.getBytes(buffer, length);
-            return BigDecimal.valueOf(Notation.getLong(bytes));
+            byte[] bytes = Notations.getBytes(buffer, length);
+            return BigDecimal.valueOf(Notations.getLong(bytes));
         }
     };
 

@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.columntype;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -11,7 +11,7 @@ public class AsciiType implements ColumnType {
     private static final Parser<String> PARSER = new Parser<String>() {
         @Override
         public String parse(ByteBuffer buffer) {
-            return Notation.getLongString(buffer);
+            return Notations.getLongString(buffer);
         }
     };
 

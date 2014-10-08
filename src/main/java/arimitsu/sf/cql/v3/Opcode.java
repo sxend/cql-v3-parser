@@ -1,5 +1,9 @@
 package arimitsu.sf.cql.v3;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by sxend on 14/06/04.
  */
@@ -21,15 +25,21 @@ public enum Opcode {
     AUTH_RESPONSE(0x0F),
     AUTH_SUCCESS(0x10),;
     public final byte number;
+    private static final Map<Byte, Opcode> OPCODE_MAP;
+
+    static {
+        Map<Byte, Opcode> map = new HashMap<>();
+        for (Opcode opcode : values()) {
+            map.put(opcode.number, opcode);
+        }
+        OPCODE_MAP = Collections.unmodifiableMap(map);
+    }
 
     Opcode(int number) {
         this.number = (byte) number;
     }
 
     public static Opcode valueOf(byte number) {
-        for (Opcode v : values()) {
-            if (v.number == number) return v;
-        }
-        throw new RuntimeException("invalid number");
+        return OPCODE_MAP.get(number);
     }
 }

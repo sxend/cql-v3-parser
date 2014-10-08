@@ -1,6 +1,6 @@
 package arimitsu.sf.cql.v3.columntype;
 
-import arimitsu.sf.cql.v3.util.Notation;
+import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
 
@@ -9,7 +9,7 @@ public class BlobType implements ColumnType {
         @Override
         public byte[] parse(ByteBuffer buffer) {
             int length = buffer.getInt();
-            return Notation.getBytes(buffer, length);
+            return Notations.getBytes(buffer, length);
         }
     };
 
