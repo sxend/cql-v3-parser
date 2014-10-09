@@ -104,10 +104,10 @@ public class QueryParameters {
         private Consistency consistency;
         private byte flags;
         private Values values;
-        public Optional<Integer> resultPageSize = Optional.empty();
-        public Optional<byte[]> pagingState = Optional.empty();
-        public Optional<Consistency> serialConsistency = Optional.empty();
-        public Optional<Long> timestamp = Optional.empty();
+        private Optional<Integer> resultPageSize = Optional.empty();
+        private Optional<byte[]> pagingState = Optional.empty();
+        private Optional<Consistency> serialConsistency = Optional.empty();
+        private Optional<Long> timestamp = Optional.empty();
 
         public Builder setConsistency(Consistency consistency) {
             this.consistency = consistency;
