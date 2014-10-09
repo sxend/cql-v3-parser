@@ -9,12 +9,12 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 2014/07/25.
  */
-public class CqlParser {
+public class CQLParser {
     private BodyParser bodyParser = new BodyParser();
 
     private Compressor compressor = new NoneCompressor();
 
-    public CqlParser withCompressor(Compressor compressor) {
+    public CQLParser withCompressor(Compressor compressor) {
         this.compressor = compressor;
         return this;
     }

@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by sxend on 14/06/11.
  */
 public class Metadata {
-    // <flags><columns_count>[<paging_state>][<global_table_spec>?<col_spec_1>...<col_spec_n>]
+    // <queryFlags><columns_count>[<paging_state>][<global_table_spec>?<col_spec_1>...<col_spec_n>]
     public final int flags;
     public final int columnsCount;
     public final byte[] pagingState;

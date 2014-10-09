@@ -19,7 +19,7 @@ class OptionsSpec extends FlatSpec with Matchers {
   "Options Response" should "be Supported" in {
     val client = ChannelManager.getInstance
     val options = new Options()
-    val parser = new CqlParser().withCompressor(new NoneCompressor())
+    val parser = new CQLParser().withCompressor(new NoneCompressor())
     val body = options.toBody
     val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.OPTIONS, body.length), body)
     val writeBuffer = parser.frameToByteBuffer(frame)

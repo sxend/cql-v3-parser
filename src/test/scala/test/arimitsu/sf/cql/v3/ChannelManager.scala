@@ -4,7 +4,7 @@ import java.net.InetSocketAddress
 import java.nio.channels.SocketChannel
 import java.util.ResourceBundle
 
-import arimitsu.sf.cql.v3.{CqlParser => Parser}
+import arimitsu.sf.cql.v3.{CQLParser => Parser}
 
 /**
  * Created by sxend on 2014/09/30.

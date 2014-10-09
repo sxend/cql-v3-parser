@@ -20,7 +20,7 @@ public abstract class Result extends Response {
 
     public abstract ResultKind getResultKind();
 
-    public static class Builder {
+    public static class Factory {
         public static Result fromBuffer(ByteBuffer buffer) {
             int code = buffer.getInt();
             ResultKind kind = ResultKind.valueOf(code);
