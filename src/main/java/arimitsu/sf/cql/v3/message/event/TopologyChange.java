@@ -26,7 +26,7 @@ public class TopologyChange implements Event {
 
 
     @Override
-    public EventType getType() {
+    public EventType getEventType() {
         return EventType.TOPOLOGY_CHANGE;
     }
 

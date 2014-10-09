@@ -25,7 +25,7 @@ public class StatusChange implements Event {
     }
 
     @Override
-    public EventType getType() {
+    public EventType getEventType() {
         return EventType.STATUS_CHANGE;
     }
 

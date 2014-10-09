@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
  * Created by sxend on 14/06/07.
  */
 public interface Event extends Message {
-    public abstract EventType getType();
+    public abstract EventType getEventType();
 
     public static class Factory {
         public static Event fromBuffer(ByteBuffer buffer) {
