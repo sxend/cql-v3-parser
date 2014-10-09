@@ -1,7 +1,7 @@
 package arimitsu.sf.cql.v3;
 
 /**
- * Created by A12184 on 2014/10/09.
+ * Created by sxend on 2014/10/09.
  */
 public enum CQLVersion {
     CURRENT("3.0.0");

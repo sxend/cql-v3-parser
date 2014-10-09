@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Created by sxend on 14/06/04.
- * Flags applying to this frame. The flags have the following meaning
+ * Flags applying to this frame. The queryFlags have the following meaning
  */
 public enum Flags {
 
