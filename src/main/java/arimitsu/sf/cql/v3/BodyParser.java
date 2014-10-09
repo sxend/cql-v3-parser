@@ -18,9 +18,9 @@ public class BodyParser {
         ByteBuffer buffer = ByteBuffer.wrap(body);
         switch (opcode) {
             case RESULT:
-                return Result.Builder.fromBuffer(buffer);
+                return Result.Factory.fromBuffer(buffer);
             case EVENT:
-                return Event.Builder.fromBuffer(buffer);
+                return Event.Factory.fromBuffer(buffer);
             case READY:
                 return new Ready(buffer);
             case AUTHENTICATE:

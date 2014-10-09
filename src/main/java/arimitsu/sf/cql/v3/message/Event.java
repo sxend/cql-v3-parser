@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 public interface Event extends Message {
     public abstract EventType getType();
 
-    public static class Builder {
+    public static class Factory {
         public static Event fromBuffer(ByteBuffer buffer) {
             EventType eventType = EventType.valueOf(Notations.getString(buffer));
             switch (eventType) {
