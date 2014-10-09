@@ -11,7 +11,7 @@ import java.util.Map;
 public class Startup extends Request {
     public static final String CQL_VERSION = "CQL_VERSION";
     public static final String CQL_VERSION_NUMBER = "3.0.0";
-    public static final String OPTION_COMPRESSION = "COMPRESSION";
+    public static final String COMPRESSION = "COMPRESSION";
     public final Map<String, String> options;
 
     public Startup(Map<String, String> options) {
