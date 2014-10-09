@@ -23,7 +23,7 @@ public class SchemaChange extends Result implements Event {
     }
 
     @Override
-    public EventType getType() {
+    public EventType getEventType() {
         return EventType.SCHEMA_CHANGE;
     }
 

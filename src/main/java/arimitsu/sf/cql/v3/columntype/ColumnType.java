@@ -53,8 +53,11 @@ public interface ColumnType {
                 case MAP:
                     return new MapType(fromBuffer(buffer), fromBuffer(buffer));
                 case CUSTOM:
+                    return new CustomType();
                 case UDT:
+                    return new UDTType(buffer);
                 case TUPLE:
+                    return new TupleType(buffer);
                 default:
                     throw new UnsupportedOperationException("not implementation.");
             }
