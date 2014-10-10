@@ -11,7 +11,7 @@ public class CustomType implements ColumnType {
     private static final Serializer<String> SERIALIZER = new Serializer<String>() {
         @Override
         public byte[] serialize(String s) {
-            return new byte[0];
+            return Notations.toStringBytes(s);
         }
 
         @Override
