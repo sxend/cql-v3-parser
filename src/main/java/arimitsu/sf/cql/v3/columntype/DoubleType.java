@@ -3,9 +3,14 @@ package arimitsu.sf.cql.v3.columntype;
 import java.nio.ByteBuffer;
 
 public class DoubleType implements ColumnType {
-    private static final Parser<Double> PARSER = new Parser<Double>() {
+    private static final Serializer<Double> SERIALIZER = new Serializer<Double>() {
         @Override
-        public Double parse(ByteBuffer buffer) {
+        public byte[] serialize(Double aDouble) {
+            return new byte[0];
+        }
+
+        @Override
+        public Double deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
             return buffer.getDouble();
         }
@@ -13,7 +18,7 @@ public class DoubleType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

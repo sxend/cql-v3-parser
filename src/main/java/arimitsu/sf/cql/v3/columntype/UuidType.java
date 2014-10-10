@@ -6,9 +6,14 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 public class UuidType implements ColumnType {
-    private static final Parser<UUID> PARSER = new Parser<UUID>() {
+    private static final Serializer<UUID> SERIALIZER = new Serializer<UUID>() {
         @Override
-        public UUID parse(ByteBuffer buffer) {
+        public byte[] serialize(UUID uuid) {
+            return new byte[0];
+        }
+
+        @Override
+        public UUID deserialize(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
             byte[] bytes = Notations.getBytes(buffer, length);
             return Notations.toUUID(bytes);
@@ -17,7 +22,7 @@ public class UuidType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

@@ -27,7 +27,7 @@ public class Rows extends Result {
             List<Column> columns = new ArrayList<>();
             for (int j = 0, columnCount = metadata.columnsCount; j < columnCount; j++) {
                 ColumnSpec columnSpec = metadata.columnSpecList.get(j);
-                Object result = columnSpec.columnType.getParser().parse(buffer);
+                Object result = columnSpec.columnType.getSerializer().deserialize(buffer);
                 columns.add(new Column(columnSpec.columnName, result));
             }
             rowsContent.add(columns);

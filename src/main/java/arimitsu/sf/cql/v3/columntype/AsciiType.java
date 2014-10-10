@@ -8,16 +8,22 @@ import java.nio.ByteBuffer;
  * Created by sxend on 2014/06/17.
  */
 public class AsciiType implements ColumnType {
-    private static final Parser<String> PARSER = new Parser<String>() {
+    private static final Serializer<String> SERIALIZER = new Serializer<String>() {
+
         @Override
-        public String parse(ByteBuffer buffer) {
+        public byte[] serialize(String string) {
+            return Notations.toLongString(string);
+        }
+
+        @Override
+        public String deserialize(ByteBuffer buffer) {
             return Notations.getLongString(buffer);
         }
     };
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

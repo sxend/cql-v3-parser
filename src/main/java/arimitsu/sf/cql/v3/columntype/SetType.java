@@ -9,14 +9,19 @@ import java.util.Set;
  */
 public class SetType implements ColumnType {
     public final ColumnType valueType;
-    private final Parser<Set<Object>> PARSER = new Parser<Set<Object>>() {
+    private final Serializer<Set<Object>> Serializer = new Serializer<Set<Object>>() {
         @Override
-        public Set<Object> parse(ByteBuffer buffer) {
+        public byte[] serialize(Set<Object> objects) {
+            return new byte[0];
+        }
+
+        @Override
+        public Set<Object> deserialize(ByteBuffer buffer) {
             Set<Object> set = new HashSet<>();
             int byteLength = buffer.getInt();
             int length = buffer.getInt();
             for (int i = 0; i < length; i++) {
-                set.add(valueType.getParser().parse(buffer));
+                set.add(valueType.getSerializer().deserialize(buffer));
             }
             return set;
         }
@@ -28,7 +33,7 @@ public class SetType implements ColumnType {
 
 
     @Override
-    public Parser<Set<Object>> getParser() {
-        return PARSER;
+    public Serializer<Set<Object>> getSerializer() {
+        return Serializer;
     }
 }

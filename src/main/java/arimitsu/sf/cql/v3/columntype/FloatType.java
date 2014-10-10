@@ -3,9 +3,14 @@ package arimitsu.sf.cql.v3.columntype;
 import java.nio.ByteBuffer;
 
 public class FloatType implements ColumnType {
-    private static final Parser<Float> PARSER = new Parser<Float>() {
+    private static final Serializer<Float> SERIALIZER = new Serializer<Float>() {
         @Override
-        public Float parse(ByteBuffer buffer) {
+        public byte[] serialize(Float aFloat) {
+            return new byte[0];
+        }
+
+        @Override
+        public Float deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
             return buffer.getFloat();
         }
@@ -13,7 +18,7 @@ public class FloatType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface ColumnType {
 
-    Parser<?> getParser();
+    Serializer<?> getSerializer();
 
     public static class Factory {
         public static ColumnType fromBuffer(ByteBuffer buffer) {

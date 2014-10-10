@@ -2,14 +2,18 @@ package arimitsu.sf.cql.v3.columntype;
 
 import arimitsu.sf.cql.v3.util.Notations;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public class VarintType implements ColumnType {
-    private static final Parser<BigInteger> PARSER = new Parser<BigInteger>() {
+    private static final Serializer<BigInteger> SERIALIZER = new Serializer<BigInteger>() {
         @Override
-        public BigInteger parse(ByteBuffer buffer) {
+        public byte[] serialize(BigInteger bigInteger) {
+            return new byte[0];
+        }
+
+        @Override
+        public BigInteger deserialize(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
             byte[] bytes = Notations.getBytes(buffer, length);
             return new BigInteger(bytes);
@@ -18,7 +22,7 @@ public class VarintType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

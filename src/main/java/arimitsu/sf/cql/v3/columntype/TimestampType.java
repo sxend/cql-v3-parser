@@ -4,9 +4,14 @@ import java.nio.ByteBuffer;
 import java.util.Date;
 
 public class TimestampType implements ColumnType {
-    private static final Parser<Date> PARSER = new Parser<Date>() {
+    private static final Serializer<Date> SERIALIZER = new Serializer<Date>() {
         @Override
-        public Date parse(ByteBuffer buffer) {
+        public byte[] serialize(Date date) {
+            return new byte[0];
+        }
+
+        @Override
+        public Date deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
             long time = buffer.getLong() * 1000;
             return new Date(time);
@@ -15,7 +20,7 @@ public class TimestampType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

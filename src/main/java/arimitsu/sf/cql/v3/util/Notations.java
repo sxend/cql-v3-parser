@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Notations {
 
     public static final int INTEGER_BYTE_LEN = 4;
     public static final int LONG_BYTE_LEN = INTEGER_BYTE_LEN * 2;
+    public static final Charset STRING_CHARSET = Charset.forName("UTF-8");
 
     public static class OptionNotation<A> {
         public final short id;
@@ -130,13 +132,13 @@ public class Notations {
         return list;
     }
 
-    public static InetAddress getINet(ByteBuffer buffer) {
-        byte[] addrArea = new byte[buffer.get()];
+    public static InetAddress getINet(ByteBuffer buffer, int length) {
+        byte[] addrArea = new byte[length];
         buffer.get(addrArea);
         return toInet(addrArea);
     }
 
-    public static InetAddress toInet(byte[] bytes) {
+    private static InetAddress toInet(byte[] bytes) {
         try {
             return InetAddress.getByAddress(bytes);
         } catch (UnknownHostException e) {
@@ -185,7 +187,7 @@ public class Notations {
     public static byte[] toLongString(String str) {
         byte[] bytes;
         try {
-            bytes = str.getBytes("UTF-8");
+            bytes = str.getBytes(STRING_CHARSET);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -195,7 +197,7 @@ public class Notations {
     public static byte[] toString(String str) {
         byte[] bytes;
         try {
-            bytes = str.getBytes("UTF-8");
+            bytes = str.getBytes(STRING_CHARSET);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }

@@ -7,9 +7,14 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public class DecimalType implements ColumnType {
-    private static final Parser<BigDecimal> PARSER = new Parser<BigDecimal>() {
+    private static final Serializer<BigDecimal> SERIALIZER = new Serializer<BigDecimal>() {
         @Override
-        public BigDecimal parse(ByteBuffer buffer) {
+        public byte[] serialize(BigDecimal bigDecimal) {
+            return new byte[0];
+        }
+
+        @Override
+        public BigDecimal deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
             int scale = buffer.getInt();
             byte[] bytes = Notations.getBytes(buffer, length - Notations.INTEGER_BYTE_LEN);
@@ -19,7 +24,7 @@ public class DecimalType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

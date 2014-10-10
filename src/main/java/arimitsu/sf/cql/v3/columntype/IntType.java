@@ -3,9 +3,14 @@ package arimitsu.sf.cql.v3.columntype;
 import java.nio.ByteBuffer;
 
 public class IntType implements ColumnType {
-    private static final Parser<Integer> PARSER = new Parser<Integer>() {
+    private static final Serializer<Integer> SERIALIZER = new Serializer<Integer>() {
         @Override
-        public Integer parse(ByteBuffer buffer) {
+        public byte[] serialize(Integer integer) {
+            return new byte[0];
+        }
+
+        @Override
+        public Integer deserialize(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
             return buffer.getInt();
         }
@@ -13,7 +18,7 @@ public class IntType implements ColumnType {
 
 
     @Override
-    public Parser<Integer> getParser() {
-        return PARSER;
+    public Serializer<Integer> getSerializer() {
+        return SERIALIZER;
     }
 }

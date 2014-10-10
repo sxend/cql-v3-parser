@@ -5,9 +5,14 @@ import arimitsu.sf.cql.v3.util.Notations;
 import java.nio.ByteBuffer;
 
 public class BlobType implements ColumnType {
-    private static final Parser<byte[]> PARSER = new Parser<byte[]>() {
+    private static final Serializer<byte[]> SERIALIZER = new Serializer<byte[]>() {
         @Override
-        public byte[] parse(ByteBuffer buffer) {
+        public byte[] serialize(byte[] bytes) {
+            return null;
+        }
+
+        @Override
+        public byte[] deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
             return Notations.getBytes(buffer, length);
         }
@@ -15,7 +20,7 @@ public class BlobType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

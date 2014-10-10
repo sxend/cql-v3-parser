@@ -34,7 +34,7 @@ public class UDTType implements ColumnType {
     }
 
     @Override
-    public Parser<?> getParser() {
+    public Serializer<?> getSerializer() {
         return null;
     }
 }

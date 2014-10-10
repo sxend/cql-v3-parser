@@ -6,17 +6,22 @@ import java.net.InetAddress;
 import java.nio.ByteBuffer;
 
 public class InetType implements ColumnType {
-    private static final Parser<InetAddress> PARSER = new Parser<InetAddress>() {
+    private static final Serializer<InetAddress> SERIALIZER = new Serializer<InetAddress>() {
         @Override
-        public InetAddress parse(ByteBuffer buffer) {
+        public byte[] serialize(InetAddress inetAddress) {
+            return new byte[0];
+        }
+
+        @Override
+        public InetAddress deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
-            return Notations.toInet(Notations.getBytes(buffer, length));
+            return Notations.getINet(buffer, length); //Notations.getBytes(buffer, length));
         }
     };
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

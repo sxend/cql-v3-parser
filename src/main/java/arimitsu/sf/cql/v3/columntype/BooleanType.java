@@ -3,9 +3,14 @@ package arimitsu.sf.cql.v3.columntype;
 import java.nio.ByteBuffer;
 
 public class BooleanType implements ColumnType {
-    private static final Parser<Boolean> PARSER = new Parser<Boolean>() {
+    private static final Serializer<Boolean> SERIALIZER = new Serializer<Boolean>() {
         @Override
-        public Boolean parse(ByteBuffer buffer) {
+        public byte[] serialize(Boolean aBoolean) {
+            return new byte[0];
+        }
+
+        @Override
+        public Boolean deserialize(ByteBuffer buffer) {
             buffer.getInt();
             return buffer.get() != 0;
         }
@@ -13,7 +18,7 @@ public class BooleanType implements ColumnType {
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

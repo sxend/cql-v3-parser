@@ -9,14 +9,19 @@ import java.util.List;
  */
 public class ListType implements ColumnType {
     public final ColumnType valueType;
-    private final Parser<List<Object>> PARSER = new Parser<List<Object>>() {
+    private final Serializer<List<Object>> Serializer = new Serializer<List<Object>>() {
         @Override
-        public List<Object> parse(ByteBuffer buffer) {
+        public byte[] serialize(List<Object> objects) {
+            return new byte[0];
+        }
+
+        @Override
+        public List<Object> deserialize(ByteBuffer buffer) {
             int byteLength = buffer.getInt();
             int length = buffer.getInt();
             List<Object> list = new ArrayList<>();
             for (int i = 0; i < length; i++) {
-                list.add(valueType.getParser().parse(buffer));
+                list.add(valueType.getSerializer().deserialize(buffer));
             }
             return list;
         }
@@ -28,7 +33,7 @@ public class ListType implements ColumnType {
 
 
     @Override
-    public Parser<List<Object>> getParser() {
-        return PARSER;
+    public Serializer<List<Object>> getSerializer() {
+        return Serializer;
     }
 }

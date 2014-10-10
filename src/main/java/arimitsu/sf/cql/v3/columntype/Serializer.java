@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * Created by sxend on 2014/06/17.
  */
-public interface Parser<A> {
-    A parse(ByteBuffer buffer);
+public interface Serializer<A> {
+    byte[] serialize(A a);
+
+    A deserialize(ByteBuffer buffer);
 }
