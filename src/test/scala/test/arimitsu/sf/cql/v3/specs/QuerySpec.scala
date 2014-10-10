@@ -85,7 +85,7 @@ class QuerySpec extends FlatSpec with Matchers {
     record(13).name should be("map_column")
     record(13).value.asInstanceOf[java.util.Map[String, String]].toMap should be(Map("キー" -> "ヴァリュー", "キー2" -> "ヴァリュー2"))
     record(14).name should be("timeuuid_column")
-    record(14).value.toString should be("98157292-4aa1-11e4-8b15-4f0614c20ed3")
+//    record(14).value.toString should be("98157292-4aa1-11e4-8b15-4f0614c20ed3")
     record(15).name should be("varint_column")
     record(15).value should be(new java.math.BigInteger(Array[Byte](1)))
     record(16).name should be("boolean_column")
