@@ -16,7 +16,7 @@ public class StatusChange implements Event {
 
     public StatusChange(ByteBuffer buffer) {
         this.changeType = ChangeType.valueOf(Notations.getString(buffer));
-        this.nodeAddress = Notations.getINet(buffer);
+        this.nodeAddress = Notations.getINet(buffer, buffer.get());
     }
 
     public static enum ChangeType {

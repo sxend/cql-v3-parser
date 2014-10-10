@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static arimitsu.sf.cql.v3.util.Notations.int2Bytes;
 import static arimitsu.sf.cql.v3.util.Notations.join;
-import static arimitsu.sf.cql.v3.util.Notations.long2Bytes;
-import static arimitsu.sf.cql.v3.util.Notations.short2Bytes;
+import static arimitsu.sf.cql.v3.util.Notations.toIntBytes;
+import static arimitsu.sf.cql.v3.util.Notations.toLongBytes;
+import static arimitsu.sf.cql.v3.util.Notations.toShortBytes;
 
 /**
  * Created by sxend on 14/06/12.
@@ -45,13 +45,13 @@ public class QueryParameters {
     }
 
     public byte[] toBytes() {
-        byte[] bytes = join(short2Bytes(consistency.level), new byte[]{queryFlags});
+        byte[] bytes = join(toShortBytes(consistency.level), new byte[]{queryFlags});
         bytes = join(bytes, values.toBytes());
         if (serialConsistency.isPresent()) {
-            bytes = join(bytes, short2Bytes(serialConsistency.get().level));
+            bytes = join(bytes, toLongBytes(serialConsistency.get().level));
         }
         if (timestamp.isPresent()) {
-            bytes = join(bytes, long2Bytes(timestamp.get()));
+            bytes = join(bytes, toLongBytes(timestamp.get()));
         }
         return bytes;
 
@@ -73,7 +73,7 @@ public class QueryParameters {
             byte[] result = new byte[0];
             for (Map.Entry<String, byte[]> entry : map.entrySet()) {
 
-                result = join(result, join(Notations.toString(entry.getKey()), join(int2Bytes(entry.getValue().length), entry.getValue())));
+                result = join(result, join(Notations.toStringBytes(entry.getKey()), join(toIntBytes(entry.getValue().length), entry.getValue())));
             }
             return result;
         }
@@ -87,14 +87,14 @@ public class QueryParameters {
         }
 
         public void putInt(int value) {
-            list.add(Notations.int2Bytes(value));
+            list.add(Notations.toIntBytes(value));
         }
 
         @Override
         public byte[] toBytes() {
-            byte[] result = short2Bytes((short) list.size());
+            byte[] result = toShortBytes((short) list.size());
             for (byte[] bytes : list) {
-                result = join(result, join(int2Bytes(bytes.length), bytes));
+                result = join(result, join(toIntBytes(bytes.length), bytes));
             }
             return result;
         }

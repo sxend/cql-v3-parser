@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,11 @@ import java.util.UUID;
  * describe the layout of the frame body for the messages in Section 4, we define the following
  */
 public class Notations {
+
+    public static final int INTEGER_BYTE_LEN = 4;
+    public static final int LONG_BYTE_LEN = INTEGER_BYTE_LEN * 2;
+    public static final String EMPTY = "";
+    public static final Charset STRING_CHARSET = Charset.forName("UTF-8");
 
     public static class OptionNotation<A> {
         public final short id;
@@ -41,7 +47,29 @@ public class Notations {
         return getString(buffer, buffer.getShort());
     }
 
-    public static final String EMPTY = "";
+    public static long getLong(ByteBuffer buffer) {
+        return getNumber(buffer, LONG_BYTE_LEN);
+    }
+
+    public static int getInt(ByteBuffer buffer) {
+        return getNumber(buffer, INTEGER_BYTE_LEN).intValue();
+    }
+
+    private static Long getNumber(ByteBuffer buffer, int length) {
+        long result = 0;
+        for (int i = 0; i < length; i++) {
+            result += ((0xff & buffer.get()) << ((length - i - 1) * length));
+        }
+        return result;
+    }
+
+//    public static float getFloat(ByteBuffer buffer){
+//        return buffer.getFloat();
+//    }
+//
+//    public static double getDouble(ByteBuffer buffer){
+//        return buffer.getDouble();
+//    }
 
     public static String getString(ByteBuffer buffer, int length) {
         if (length <= 0) return EMPTY;
@@ -54,10 +82,10 @@ public class Notations {
         return getString(buffer, buffer.getInt());
     }
 
-    public static UUID getUUID(ByteBuffer buffer) {
-        byte[] bytes = new byte[16];
+    public static UUID getUUID(ByteBuffer buffer, int length) {
+        byte[] bytes = new byte[length];
         buffer.get(bytes);
-        return UUID.nameUUIDFromBytes(bytes);
+        return getUUIDFromBytes(bytes);
     }
 
     private static final Constructor<UUID> UUID_CONSTRUCTOR;
@@ -72,7 +100,7 @@ public class Notations {
         UUID_CONSTRUCTOR = c;
     }
 
-    public static UUID toUUID(byte[] bytes) {
+    private static UUID getUUIDFromBytes(byte[] bytes) {
         try {
             return UUID_CONSTRUCTOR.newInstance(bytes);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -110,7 +138,7 @@ public class Notations {
             buffer.get(bytes);
             return bytes;
         } else {
-            return null;
+            return new byte[0];
         }
     }
 
@@ -127,13 +155,13 @@ public class Notations {
         return list;
     }
 
-    public static InetAddress getINet(ByteBuffer buffer) {
-        byte[] addrArea = new byte[buffer.get()];
+    public static InetAddress getINet(ByteBuffer buffer, int length) {
+        byte[] addrArea = new byte[length];
         buffer.get(addrArea);
-        return toInet(addrArea);
+        return getInetFromBytes(addrArea);
     }
 
-    public static InetAddress toInet(byte[] bytes) {
+    private static InetAddress getInetFromBytes(byte[] bytes) {
         try {
             return InetAddress.getByAddress(bytes);
         } catch (UnknownHostException e) {
@@ -162,19 +190,19 @@ public class Notations {
     }
 
     public static byte[] toStringList(List<String> list) {
-        byte[] length = short2Bytes((short) list.size());
+        byte[] length = toShortBytes((short) list.size());
         byte[] bytes = new byte[]{};
         for (String str : list) {
-            bytes = join(bytes, toString(str));
+            bytes = join(bytes, toStringBytes(str));
         }
         return join(length, bytes);
     }
 
     public static byte[] toStringMap(Map<String, String> maps) {
-        byte[] mapLength = short2Bytes((short) maps.size());
+        byte[] mapLength = toShortBytes((short) maps.size());
         byte[] result = new byte[0];
         for (Map.Entry<String, String> entry : maps.entrySet()) {
-            result = join(result, join(toString(entry.getKey()), toString(entry.getValue())));
+            result = join(result, join(toStringBytes(entry.getKey()), toStringBytes(entry.getValue())));
         }
         return join(mapLength, result);
     }
@@ -182,33 +210,33 @@ public class Notations {
     public static byte[] toLongString(String str) {
         byte[] bytes;
         try {
-            bytes = str.getBytes("UTF-8");
+            bytes = str.getBytes(STRING_CHARSET);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        return join(int2Bytes(bytes.length), bytes);
+        return join(toIntBytes(bytes.length), bytes);
     }
 
-    public static byte[] toString(String str) {
+    public static byte[] toStringBytes(String str) {
         byte[] bytes;
         try {
-            bytes = str.getBytes("UTF-8");
+            bytes = str.getBytes(STRING_CHARSET);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
         int length = bytes.length;
-        return join(short2Bytes((short) length), bytes);
+        return join(toShortBytes((short) length), bytes);
     }
 
-    public static byte[] short2Bytes(short s) {
+    public static byte[] toShortBytes(short s) {
         byte[] bytes = new byte[2];
         bytes[0] = (byte) (0xff & (s >>> 8));
         bytes[1] = (byte) (0xff & s);
         return bytes;
     }
 
-    public static byte[] int2Bytes(int s) {
-        byte[] bytes = new byte[4];
+    public static byte[] toIntBytes(int s) {
+        byte[] bytes = new byte[INTEGER_BYTE_LEN];
         bytes[0] = (byte) (0xff & (s >>> 24));
         bytes[1] = (byte) (0xff & (s >>> 16));
         bytes[2] = (byte) (0xff & (s >>> 8));
@@ -216,8 +244,8 @@ public class Notations {
         return bytes;
     }
 
-    public static byte[] long2Bytes(long s) {
-        byte[] bytes = new byte[8];
+    public static byte[] toLongBytes(long s) {
+        byte[] bytes = new byte[LONG_BYTE_LEN];
         bytes[0] = (byte) (0xff & (s >>> 56));
         bytes[1] = (byte) (0xff & (s >>> 48));
         bytes[2] = (byte) (0xff & (s >>> 40));
@@ -229,6 +257,17 @@ public class Notations {
         return bytes;
     }
 
+    public static byte[] toINetBytes(InetAddress inetAddress) {
+        return inetAddress.getAddress();
+    }
+
+    public static byte[] toUUIDBytes(UUID uuid) {
+        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+        bb.putLong(uuid.getMostSignificantBits());
+        bb.putLong(uuid.getLeastSignificantBits());
+        return bb.array();
+    }
+
     public static byte[] join(byte[] byte1, byte[] byte2) {
         byte[] resultBytes = new byte[byte1.length + byte2.length];
         System.arraycopy(byte1, 0, resultBytes, 0, byte1.length);
@@ -236,11 +275,4 @@ public class Notations {
         return resultBytes;
     }
 
-    public static long getLong(byte[] bytes) {
-        long result = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            result += ((0xff & bytes[i]) << ((bytes.length - i - 1) * 8));
-        }
-        return result;
-    }
 }

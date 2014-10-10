@@ -12,12 +12,25 @@ import java.util.List;
 public class TupleType implements ColumnType {
     public final int length;
     public final ColumnType[] valueTypes;
-    private final Parser<List<Object>> PARSER = new Parser<List<Object>>() {
+    private final Serializer<List<Object>> Serializer = new Serializer<List<Object>>() {
         @Override
-        public List<Object> parse(ByteBuffer buffer) {
+        public byte[] serialize(List<Object> objects) {
+            int elementCount = objects.size();
+            byte[] bytes = new byte[0];
+            for (int i = 0; i < elementCount; i++) {
+                Serializer<Object> serializer = (Serializer<Object>) valueTypes[i].getSerializer();
+                bytes = Notations.join(bytes, serializer.serialize(objects.get(i)));
+            }
+            bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return new byte[0];
+        }
+
+        @Override
+        public List<Object> deserialize(ByteBuffer buffer) {
             List<Object> list = new ArrayList<>();
             for (int i = 0, length = valueTypes.length; i < length; i++) {
-                list.add(valueTypes[i].getParser().parse(buffer));
+                list.add(valueTypes[i].getSerializer().deserialize(buffer));
             }
             return list;
         }
@@ -33,7 +46,7 @@ public class TupleType implements ColumnType {
     }
 
     @Override
-    public Parser<List<Object>> getParser() {
-        return PARSER;
+    public Serializer<List<Object>> getSerializer() {
+        return Serializer;
     }
 }

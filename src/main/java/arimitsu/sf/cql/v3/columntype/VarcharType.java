@@ -5,16 +5,23 @@ import arimitsu.sf.cql.v3.util.Notations;
 import java.nio.ByteBuffer;
 
 public class VarcharType implements ColumnType {
-    private static final Parser<String> PARSER = new Parser<String>() {
+    private static final Serializer<String> SERIALIZER = new Serializer<String>() {
         @Override
-        public String parse(ByteBuffer buffer) {
-            return Notations.getString(buffer, buffer.getInt());
+        public byte[] serialize(String s) {
+            byte[] bytes = Notations.toStringBytes(s);
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
+        }
+
+        @Override
+        public String deserialize(ByteBuffer buffer) {
+            int length = buffer.getInt();
+            return Notations.getString(buffer, length);
         }
     };
 
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }

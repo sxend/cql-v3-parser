@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,16 +12,30 @@ import java.util.Map;
 public class MapType implements ColumnType {
     public final ColumnType keyType;
     public final ColumnType valueType;
-    private final Parser<Map<Object, Object>> PARSER = new Parser<Map<Object, Object>>() {
+    private final Serializer<Map<Object, Object>> Serializer = new Serializer<Map<Object, Object>>() {
         @Override
-        public Map<Object, Object> parse(ByteBuffer buffer) {
-            Parser<?> keyParser = keyType.getParser();
-            Parser<?> valueParser = valueType.getParser();
+        public byte[] serialize(Map<Object, Object> map) {
+            Serializer<Object> keySerializer = ((Serializer<Object>) keyType.getSerializer());
+            Serializer<Object> valueSerializer = ((Serializer<Object>) valueType.getSerializer());
+            int mappingCount = map.size();
+            byte[] bytes = new byte[0];
+            for (Map.Entry<Object, Object> entry : map.entrySet()) {
+                bytes = Notations.join(bytes, Notations.join(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue())));
+            }
+            bytes = Notations.join(Notations.toIntBytes(mappingCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return bytes;
+        }
+
+        @Override
+        public Map<Object, Object> deserialize(ByteBuffer buffer) {
+            Serializer<?> keySerializer = keyType.getSerializer();
+            Serializer<?> valueSerializer = valueType.getSerializer();
             Map<Object, Object> map = new HashMap<>();
-            int byteLength = buffer.getInt();
             int length = buffer.getInt();
-            for (int i = 0; i < length; i++) {
-                map.put(keyParser.parse(buffer), valueParser.parse(buffer));
+            int mappingCount = buffer.getInt();
+            for (int i = 0; i < mappingCount; i++) {
+                map.put(keySerializer.deserialize(buffer), valueSerializer.deserialize(buffer));
             }
             return map;
         }
@@ -32,7 +48,7 @@ public class MapType implements ColumnType {
 
 
     @Override
-    public Parser<Map<Object, Object>> getParser() {
-        return PARSER;
+    public Serializer<Map<Object, Object>> getSerializer() {
+        return Serializer;
     }
 }

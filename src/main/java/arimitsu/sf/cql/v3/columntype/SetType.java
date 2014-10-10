@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,14 +11,28 @@ import java.util.Set;
  */
 public class SetType implements ColumnType {
     public final ColumnType valueType;
-    private final Parser<Set<Object>> PARSER = new Parser<Set<Object>>() {
+    private final Serializer<Set<Object>> Serializer = new Serializer<Set<Object>>() {
         @Override
-        public Set<Object> parse(ByteBuffer buffer) {
+        public byte[] serialize(Set<Object> objects) {
+            Serializer<Object> serializer = ((Serializer<Object>) valueType.getSerializer());
+            int elementCount = objects.size();
+            byte[] bytes = new byte[0];
+
+            for (Object object : objects.toArray()) {
+                bytes = Notations.join(bytes, serializer.serialize(object));
+            }
+            bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return bytes;
+        }
+
+        @Override
+        public Set<Object> deserialize(ByteBuffer buffer) {
             Set<Object> set = new HashSet<>();
-            int byteLength = buffer.getInt();
             int length = buffer.getInt();
-            for (int i = 0; i < length; i++) {
-                set.add(valueType.getParser().parse(buffer));
+            int elementCount = buffer.getInt();
+            for (int i = 0; i < elementCount; i++) {
+                set.add(valueType.getSerializer().deserialize(buffer));
             }
             return set;
         }
@@ -28,7 +44,7 @@ public class SetType implements ColumnType {
 
 
     @Override
-    public Parser<Set<Object>> getParser() {
-        return PARSER;
+    public Serializer<Set<Object>> getSerializer() {
+        return Serializer;
     }
 }

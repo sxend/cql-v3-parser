@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +11,27 @@ import java.util.List;
  */
 public class ListType implements ColumnType {
     public final ColumnType valueType;
-    private final Parser<List<Object>> PARSER = new Parser<List<Object>>() {
+    private final Serializer<List<Object>> Serializer = new Serializer<List<Object>>() {
         @Override
-        public List<Object> parse(ByteBuffer buffer) {
-            int byteLength = buffer.getInt();
+        public byte[] serialize(List<Object> objects) {
+            Serializer<Object> serializer = ((Serializer<Object>) valueType.getSerializer());
+            int elementCount = objects.size();
+            byte[] bytes = new byte[0];
+            for (int i = 0; i < elementCount; i++) {
+                bytes = Notations.join(bytes, serializer.serialize(objects.get(i)));
+            }
+            bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return bytes;
+        }
+
+        @Override
+        public List<Object> deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
+            int elementCount = buffer.getInt();
             List<Object> list = new ArrayList<>();
-            for (int i = 0; i < length; i++) {
-                list.add(valueType.getParser().parse(buffer));
+            for (int i = 0; i < elementCount; i++) {
+                list.add(valueType.getSerializer().deserialize(buffer));
             }
             return list;
         }
@@ -28,7 +43,7 @@ public class ListType implements ColumnType {
 
 
     @Override
-    public Parser<List<Object>> getParser() {
-        return PARSER;
+    public Serializer<List<Object>> getSerializer() {
+        return Serializer;
     }
 }

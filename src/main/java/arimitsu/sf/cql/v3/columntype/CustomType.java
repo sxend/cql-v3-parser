@@ -8,15 +8,20 @@ import java.nio.ByteBuffer;
  * Created by sxend on 2014/10/09.
  */
 public class CustomType implements ColumnType {
-    private static final Parser<String> PARSER = new Parser<String>() {
+    private static final Serializer<String> SERIALIZER = new Serializer<String>() {
         @Override
-        public String parse(ByteBuffer buffer) {
+        public byte[] serialize(String s) {
+            return Notations.toStringBytes(s);
+        }
+
+        @Override
+        public String deserialize(ByteBuffer buffer) {
             return Notations.getString(buffer);
         }
     };
 
     @Override
-    public Parser<?> getParser() {
-        return PARSER;
+    public Serializer<?> getSerializer() {
+        return SERIALIZER;
     }
 }
