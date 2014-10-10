@@ -10,7 +10,9 @@ public class DecimalType implements ColumnType {
     private static final Serializer<BigDecimal> SERIALIZER = new Serializer<BigDecimal>() {
         @Override
         public byte[] serialize(BigDecimal bigDecimal) {
-            return new byte[0];
+            int scale = bigDecimal.scale();
+            byte[] bytes = Notations.join(Notations.toIntBytes(scale), bigDecimal.toBigInteger().toByteArray());
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override

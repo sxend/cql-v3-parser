@@ -9,7 +9,8 @@ public class InetType implements ColumnType {
     private static final Serializer<InetAddress> SERIALIZER = new Serializer<InetAddress>() {
         @Override
         public byte[] serialize(InetAddress inetAddress) {
-            return new byte[0];
+            byte[] bytes = Notations.toINetBytes(inetAddress);
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override

@@ -63,17 +63,13 @@ public class Notations {
         return result;
     }
 
-    public static float getFloat(ByteBuffer buffer){
-        return buffer.getFloat();
-    }
-
-    public static double getDouble(ByteBuffer buffer){
-        return buffer.getDouble();
-    }
-
-    public static boolean getBoolean(ByteBuffer buffer){
-        return buffer.get() != 0;
-    }
+//    public static float getFloat(ByteBuffer buffer){
+//        return buffer.getFloat();
+//    }
+//
+//    public static double getDouble(ByteBuffer buffer){
+//        return buffer.getDouble();
+//    }
 
     public static String getString(ByteBuffer buffer, int length) {
         if (length <= 0) return EMPTY;
@@ -259,6 +255,17 @@ public class Notations {
         bytes[6] = (byte) (0xff & (s >>> 8));
         bytes[7] = (byte) (0xff & s);
         return bytes;
+    }
+
+    public static byte[] toINetBytes(InetAddress inetAddress) {
+        return inetAddress.getAddress();
+    }
+
+    public static byte[] toUUIDBytes(UUID uuid) {
+        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+        bb.putLong(uuid.getMostSignificantBits());
+        bb.putLong(uuid.getLeastSignificantBits());
+        return bb.array();
     }
 
     public static byte[] join(byte[] byte1, byte[] byte2) {

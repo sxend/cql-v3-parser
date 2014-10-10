@@ -16,7 +16,7 @@ public class TopologyChange implements Event {
 
     public TopologyChange(ByteBuffer buffer) {
         this.changeType = ChangeType.valueOf(Notations.getString(buffer));
-        this.nodeAddress = Notations.getINet(buffer,buffer.get());
+        this.nodeAddress = Notations.getINet(buffer, buffer.get());
     }
 
     public static enum ChangeType {

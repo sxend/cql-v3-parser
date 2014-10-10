@@ -15,6 +15,14 @@ public class TupleType implements ColumnType {
     private final Serializer<List<Object>> Serializer = new Serializer<List<Object>>() {
         @Override
         public byte[] serialize(List<Object> objects) {
+            int elementCount = objects.size();
+            byte[] bytes = new byte[0];
+            for (int i = 0; i < elementCount; i++) {
+                Serializer<Object> serializer = (Serializer<Object>) valueTypes[i].getSerializer();
+                bytes = Notations.join(bytes, serializer.serialize(objects.get(i)));
+            }
+            bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
             return new byte[0];
         }
 

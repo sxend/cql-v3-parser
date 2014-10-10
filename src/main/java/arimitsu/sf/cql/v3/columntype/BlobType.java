@@ -8,7 +8,7 @@ public class BlobType implements ColumnType {
     private static final Serializer<byte[]> SERIALIZER = new Serializer<byte[]>() {
         @Override
         public byte[] serialize(byte[] bytes) {
-            return null;
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override

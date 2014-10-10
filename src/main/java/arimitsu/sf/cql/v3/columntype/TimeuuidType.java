@@ -9,7 +9,8 @@ public class TimeuuidType implements ColumnType {
     private static final Serializer<UUID> SERIALIZER = new Serializer<UUID>() {
         @Override
         public byte[] serialize(UUID uuid) {
-            return new byte[0];
+            byte[] bytes = Notations.toUUIDBytes(uuid);
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override

@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +14,17 @@ public class MapType implements ColumnType {
     public final ColumnType valueType;
     private final Serializer<Map<Object, Object>> Serializer = new Serializer<Map<Object, Object>>() {
         @Override
-        public byte[] serialize(Map<Object, Object> objectObjectMap) {
-            return new byte[0];
+        public byte[] serialize(Map<Object, Object> map) {
+            Serializer<Object> keySerializer = ((Serializer<Object>) keyType.getSerializer());
+            Serializer<Object> valueSerializer = ((Serializer<Object>) valueType.getSerializer());
+            int mappingCount = map.size();
+            byte[] bytes = new byte[0];
+            for (Map.Entry<Object, Object> entry : map.entrySet()) {
+                bytes = Notations.join(bytes, Notations.join(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue())));
+            }
+            bytes = Notations.join(Notations.toIntBytes(mappingCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return bytes;
         }
 
         @Override

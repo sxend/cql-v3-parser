@@ -9,7 +9,8 @@ public class VarintType implements ColumnType {
     private static final Serializer<BigInteger> SERIALIZER = new Serializer<BigInteger>() {
         @Override
         public byte[] serialize(BigInteger bigInteger) {
-            return new byte[0];
+            byte[] bytes = bigInteger.toByteArray();
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override
@@ -19,7 +20,6 @@ public class VarintType implements ColumnType {
             return new BigInteger(bytes);
         }
     };
-
 
     @Override
     public Serializer<?> getSerializer() {

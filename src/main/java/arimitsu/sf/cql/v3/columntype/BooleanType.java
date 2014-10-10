@@ -8,13 +8,17 @@ public class BooleanType implements ColumnType {
     private static final Serializer<Boolean> SERIALIZER = new Serializer<Boolean>() {
         @Override
         public byte[] serialize(Boolean aBoolean) {
-            return new byte[0];
+            byte flag = 0;
+            if (aBoolean) {
+                flag = 1;
+            }
+            return Notations.join(Notations.toIntBytes(1), new byte[]{flag});
         }
 
         @Override
         public Boolean deserialize(ByteBuffer buffer) {
             buffer.getInt();
-            return Notations.getBoolean(buffer);
+            return buffer.get() != 0;
         }
     };
 

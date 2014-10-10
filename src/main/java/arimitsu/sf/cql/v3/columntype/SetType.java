@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +14,16 @@ public class SetType implements ColumnType {
     private final Serializer<Set<Object>> Serializer = new Serializer<Set<Object>>() {
         @Override
         public byte[] serialize(Set<Object> objects) {
-            return new byte[0];
+            Serializer<Object> serializer = ((Serializer<Object>) valueType.getSerializer());
+            int elementCount = objects.size();
+            byte[] bytes = new byte[0];
+
+            for (Object object : objects.toArray()) {
+                bytes = Notations.join(bytes, serializer.serialize(object));
+            }
+            bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return bytes;
         }
 
         @Override

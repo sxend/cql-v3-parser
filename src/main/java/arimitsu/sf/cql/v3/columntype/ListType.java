@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,15 @@ public class ListType implements ColumnType {
     private final Serializer<List<Object>> Serializer = new Serializer<List<Object>>() {
         @Override
         public byte[] serialize(List<Object> objects) {
-            return new byte[0];
+            Serializer<Object> serializer = ((Serializer<Object>) valueType.getSerializer());
+            int elementCount = objects.size();
+            byte[] bytes = new byte[0];
+            for (int i = 0; i < elementCount; i++) {
+                bytes = Notations.join(bytes, serializer.serialize(objects.get(i)));
+            }
+            bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
+            bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return bytes;
         }
 
         @Override

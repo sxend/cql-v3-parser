@@ -8,7 +8,8 @@ public class IntType implements ColumnType {
     private static final Serializer<Integer> SERIALIZER = new Serializer<Integer>() {
         @Override
         public byte[] serialize(Integer integer) {
-            return new byte[0];
+            byte[] bytes = Notations.toIntBytes(integer);
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override
