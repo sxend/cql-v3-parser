@@ -22,6 +22,7 @@ public class Notations {
 
     public static final int INTEGER_BYTE_LEN = 4;
     public static final int LONG_BYTE_LEN = INTEGER_BYTE_LEN * 2;
+    public static final String EMPTY = "";
     public static final Charset STRING_CHARSET = Charset.forName("UTF-8");
 
     public static class OptionNotation<A> {
@@ -46,7 +47,23 @@ public class Notations {
         return getString(buffer, buffer.getShort());
     }
 
-    public static final String EMPTY = "";
+    public static long getLong(ByteBuffer buffer) {
+        return getNumber(buffer, LONG_BYTE_LEN);
+    }
+
+    public static int getInt(ByteBuffer buffer) {
+        return getNumber(buffer, INTEGER_BYTE_LEN).intValue();
+    }
+
+    private static Long getNumber(ByteBuffer buffer, int length) {
+        long result = 0;
+        for (int i = 0; i < length; i++) {
+            result += ((0xff & buffer.get()) << ((length - i - 1) * length));
+        }
+        return result;
+    }
+
+
 
     public static String getString(ByteBuffer buffer, int length) {
         if (length <= 0) return EMPTY;
@@ -59,10 +76,10 @@ public class Notations {
         return getString(buffer, buffer.getInt());
     }
 
-    public static UUID getUUID(ByteBuffer buffer) {
-        byte[] bytes = new byte[16];
+    public static UUID getUUID(ByteBuffer buffer, int length) {
+        byte[] bytes = new byte[length];
         buffer.get(bytes);
-        return UUID.nameUUIDFromBytes(bytes);
+        return getUUIDFromBytes(bytes);
     }
 
     private static final Constructor<UUID> UUID_CONSTRUCTOR;
@@ -77,7 +94,7 @@ public class Notations {
         UUID_CONSTRUCTOR = c;
     }
 
-    public static UUID toUUID(byte[] bytes) {
+    private static UUID getUUIDFromBytes(byte[] bytes) {
         try {
             return UUID_CONSTRUCTOR.newInstance(bytes);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -135,10 +152,10 @@ public class Notations {
     public static InetAddress getINet(ByteBuffer buffer, int length) {
         byte[] addrArea = new byte[length];
         buffer.get(addrArea);
-        return toInet(addrArea);
+        return getInetFromBytes(addrArea);
     }
 
-    private static InetAddress toInet(byte[] bytes) {
+    private static InetAddress getInetFromBytes(byte[] bytes) {
         try {
             return InetAddress.getByAddress(bytes);
         } catch (UnknownHostException e) {
@@ -241,11 +258,4 @@ public class Notations {
         return resultBytes;
     }
 
-    public static long getLong(byte[] bytes) {
-        long result = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            result += ((0xff & bytes[i]) << ((bytes.length - i - 1) * 8));
-        }
-        return result;
-    }
 }

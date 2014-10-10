@@ -15,8 +15,8 @@ public class UuidType implements ColumnType {
         @Override
         public UUID deserialize(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
-            byte[] bytes = Notations.getBytes(buffer, length);
-            return Notations.toUUID(bytes);
+//            byte[] bytes = Notations.getBytes(buffer, length);
+            return Notations.getUUID(buffer, length);
         }
     };
 
