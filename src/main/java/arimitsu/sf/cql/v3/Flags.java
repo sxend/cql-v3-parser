@@ -26,22 +26,25 @@ public enum Flags {
 
     public final byte value;
 
-    private static final Map<Byte, Flags> FLAGS_MAP;
-
-    static {
-        Map<Byte, Flags> map = new HashMap<>();
-        for (Flags flags : values()) {
-            map.put(flags.value, flags);
-        }
-        map.put(null, NONE);
-        FLAGS_MAP = Collections.unmodifiableMap(map);
-    }
-
     Flags(int value) {
         this.value = (byte) value;
     }
 
+    private static final Map<Byte, Flags> INDEX;
+
+    static {
+        Map<Byte, Flags> index = new HashMap<>();
+        for (Flags flags : values()) {
+            index.put(flags.value, flags);
+        }
+        index.put(null, NONE);
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
     public static Flags valueOf(byte value) {
-        return FLAGS_MAP.get(value);
+        if (!INDEX.containsKey(value)) {
+            throw new IllegalArgumentException("invalid value: " + value);
+        }
+        return INDEX.get(value);
     }
 }

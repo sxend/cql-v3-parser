@@ -1,5 +1,9 @@
 package arimitsu.sf.cql.v3.message.response;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by sxend on 14/07/06.
  */
@@ -25,10 +29,20 @@ public enum ErrorCodes {
         this.code = code;
     }
 
-    public static ErrorCodes valueOf(int code) {
-        for (ErrorCodes ec : values()) {
-            if (ec.code == code) return ec;
+    private static final Map<Integer, ErrorCodes> INDEX;
+
+    static {
+        Map<Integer, ErrorCodes> index = new HashMap<>();
+        for (ErrorCodes errorCodes : values()) {
+            index.put(errorCodes.code, errorCodes);
         }
-        throw new RuntimeException("invalid code.");
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
+    public static ErrorCodes valueOf(int code) {
+        if (!INDEX.containsKey(code)) {
+            throw new IllegalArgumentException("invalid code: " + code);
+        }
+        return INDEX.get(code);
     }
 }

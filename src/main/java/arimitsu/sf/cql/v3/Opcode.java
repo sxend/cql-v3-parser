@@ -25,21 +25,25 @@ public enum Opcode {
     AUTH_RESPONSE(0x0F),
     AUTH_SUCCESS(0x10),;
     public final byte number;
-    private static final Map<Byte, Opcode> OPCODE_MAP;
-
-    static {
-        Map<Byte, Opcode> map = new HashMap<>();
-        for (Opcode opcode : values()) {
-            map.put(opcode.number, opcode);
-        }
-        OPCODE_MAP = Collections.unmodifiableMap(map);
-    }
 
     Opcode(int number) {
         this.number = (byte) number;
     }
 
+    private static final Map<Byte, Opcode> INDEX;
+
+    static {
+        Map<Byte, Opcode> index = new HashMap<>();
+        for (Opcode opcode : values()) {
+            index.put(opcode.number, opcode);
+        }
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
     public static Opcode valueOf(byte number) {
-        return OPCODE_MAP.get(number);
+        if (!INDEX.containsKey(number)) {
+            throw new IllegalArgumentException("invalid number: " + number);
+        }
+        return INDEX.get(number);
     }
 }

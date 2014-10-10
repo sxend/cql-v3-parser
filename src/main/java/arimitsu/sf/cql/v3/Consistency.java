@@ -1,5 +1,9 @@
 package arimitsu.sf.cql.v3;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by sxend on 14/06/04.
  */
@@ -21,10 +25,20 @@ public enum Consistency {
         this.level = (short) level;
     }
 
-    public static Consistency valueOf(short level) {
-        for (Consistency c : values()) {
-            if (c.level == level) return c;
+    private static final Map<Short, Consistency> INDEX;
+
+    static {
+        Map<Short, Consistency> index = new HashMap<>();
+        for (Consistency consistency : values()) {
+            index.put(consistency.level, consistency);
         }
-        throw new RuntimeException("invalid level");
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
+    public static Consistency valueOf(short level) {
+        if (!INDEX.containsKey(level)) {
+            throw new IllegalArgumentException("invalid level: " + level);
+        }
+        return INDEX.get(level);
     }
 }

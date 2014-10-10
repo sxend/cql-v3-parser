@@ -19,21 +19,24 @@ public enum Version {
     RESPONSE(0x83),;
     public final byte number;
 
-    private static final Map<Byte, Version> VERSION_MAP;
-
-    static {
-        Map<Byte, Version> map = new HashMap<>();
-        for (Version version : values()) {
-            map.put(version.number, version);
-        }
-        VERSION_MAP = Collections.unmodifiableMap(map);
-    }
-
     Version(int number) {
         this.number = (byte) number;
     }
 
+    private static final Map<Byte, Version> INDEX;
+
+    static {
+        Map<Byte, Version> index = new HashMap<>();
+        for (Version version : values()) {
+            index.put(version.number, version);
+        }
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
     public static Version valueOf(byte number) {
-        return VERSION_MAP.get(number);
+        if (!INDEX.containsKey(number)) {
+            throw new IllegalArgumentException("invalid number: " + number);
+        }
+        return INDEX.get(number);
     }
 }

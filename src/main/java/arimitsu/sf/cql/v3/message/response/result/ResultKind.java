@@ -1,5 +1,9 @@
 package arimitsu.sf.cql.v3.message.response.result;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by sxend on 2014/07/30.
  */
@@ -15,10 +19,20 @@ public enum ResultKind {
         this.code = code;
     }
 
-    public static ResultKind valueOf(int code) {
-        for (ResultKind r : values()) {
-            if (r.code == code) return r;
+    private static final Map<Integer, ResultKind> INDEX;
+
+    static {
+        Map<Integer, ResultKind> index = new HashMap<>();
+        for (ResultKind resultKind : values()) {
+            index.put(resultKind.code, resultKind);
         }
-        throw new RuntimeException("invalid code");
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
+    public static ResultKind valueOf(int code) {
+        if (!INDEX.containsKey(code)) {
+            throw new IllegalArgumentException("invalid code: " + code);
+        }
+        return INDEX.get(code);
     }
 }

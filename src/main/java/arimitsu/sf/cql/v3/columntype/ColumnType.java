@@ -4,6 +4,9 @@ package arimitsu.sf.cql.v3.columntype;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sxend on 14/06/14.
@@ -92,11 +95,21 @@ public interface ColumnType {
             this.id = (short) id;
         }
 
-        public static ColumnTypeEnum valueOf(short id) {
+        private static final Map<Short, ColumnTypeEnum> INDEX;
+
+        static {
+            Map<Short, ColumnTypeEnum> index = new HashMap<>();
             for (ColumnTypeEnum columnTypeEnum : values()) {
-                if (columnTypeEnum.id == id) return columnTypeEnum;
+                index.put(columnTypeEnum.id, columnTypeEnum);
             }
-            throw new RuntimeException("invalid id.");
+            INDEX = Collections.unmodifiableMap(index);
+        }
+
+        public static ColumnTypeEnum valueOf(short id) {
+            if (!INDEX.containsKey(id)) {
+                throw new IllegalArgumentException("invalid id: " + id);
+            }
+            return INDEX.get(id);
         }
 
     }

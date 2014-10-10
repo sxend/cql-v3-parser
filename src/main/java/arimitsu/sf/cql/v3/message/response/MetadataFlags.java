@@ -1,5 +1,9 @@
 package arimitsu.sf.cql.v3.message.response;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by sxend on 14/07/06.
  */
@@ -14,10 +18,20 @@ public enum MetadataFlags {
         this.mask = mask;
     }
 
-    public static MetadataFlags valueOf(int mask) {
-        for (MetadataFlags f : values()) {
-            if (f.mask == mask) return f;
+    private static final Map<Integer, MetadataFlags> INDEX;
+
+    static {
+        Map<Integer, MetadataFlags> index = new HashMap<>();
+        for (MetadataFlags metadataFlags : values()) {
+            index.put(metadataFlags.mask, metadataFlags);
         }
-        throw new RuntimeException("invalid mask");
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
+    public static MetadataFlags valueOf(int mask) {
+        if (!INDEX.containsKey(mask)) {
+            throw new IllegalArgumentException("invalid mask: " + mask);
+        }
+        return INDEX.get(mask);
     }
 }
