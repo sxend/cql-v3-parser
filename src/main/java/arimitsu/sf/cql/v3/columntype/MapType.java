@@ -21,9 +21,9 @@ public class MapType implements ColumnType {
             Serializer<?> keySerializer = keyType.getSerializer();
             Serializer<?> valueSerializer = valueType.getSerializer();
             Map<Object, Object> map = new HashMap<>();
-            int byteLength = buffer.getInt();
             int length = buffer.getInt();
-            for (int i = 0; i < length; i++) {
+            int mappingCount = buffer.getInt();
+            for (int i = 0; i < mappingCount; i++) {
                 map.put(keySerializer.deserialize(buffer), valueSerializer.deserialize(buffer));
             }
             return map;

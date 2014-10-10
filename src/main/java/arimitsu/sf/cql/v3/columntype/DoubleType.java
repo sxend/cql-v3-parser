@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 
 public class DoubleType implements ColumnType {
@@ -11,8 +13,8 @@ public class DoubleType implements ColumnType {
 
         @Override
         public Double deserialize(ByteBuffer buffer) {
-            int length = buffer.getInt();
-            return buffer.getDouble();
+            buffer.getInt();
+            return Notations.getDouble(buffer);
         }
     };
 

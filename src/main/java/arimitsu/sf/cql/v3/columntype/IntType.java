@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 
 public class IntType implements ColumnType {
@@ -11,8 +13,8 @@ public class IntType implements ColumnType {
 
         @Override
         public Integer deserialize(ByteBuffer buffer) {
-            int length = buffer.getInt(); // length 4
-            return buffer.getInt();
+            buffer.getInt();
+            return Notations.getInt(buffer);
         }
     };
 

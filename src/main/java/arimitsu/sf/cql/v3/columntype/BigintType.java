@@ -13,8 +13,8 @@ public class BigintType implements ColumnType {
 
         @Override
         public Long deserialize(ByteBuffer buffer) {
-            buffer.getInt(); // length 4
-            return buffer.getLong();
+            buffer.getInt();
+            return Notations.getLong(buffer);
         }
     };
 

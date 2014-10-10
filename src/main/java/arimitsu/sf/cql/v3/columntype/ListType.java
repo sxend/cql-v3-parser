@@ -17,10 +17,10 @@ public class ListType implements ColumnType {
 
         @Override
         public List<Object> deserialize(ByteBuffer buffer) {
-            int byteLength = buffer.getInt();
             int length = buffer.getInt();
+            int elementCount = buffer.getInt();
             List<Object> list = new ArrayList<>();
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < elementCount; i++) {
                 list.add(valueType.getSerializer().deserialize(buffer));
             }
             return list;

@@ -14,7 +14,7 @@ public class VarintType implements ColumnType {
 
         @Override
         public BigInteger deserialize(ByteBuffer buffer) {
-            int length = buffer.getInt(); // length 4
+            int length = buffer.getInt();
             byte[] bytes = Notations.getBytes(buffer, length);
             return new BigInteger(bytes);
         }

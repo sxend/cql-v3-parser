@@ -18,9 +18,9 @@ public class SetType implements ColumnType {
         @Override
         public Set<Object> deserialize(ByteBuffer buffer) {
             Set<Object> set = new HashSet<>();
-            int byteLength = buffer.getInt();
             int length = buffer.getInt();
-            for (int i = 0; i < length; i++) {
+            int elementCount = buffer.getInt();
+            for (int i = 0; i < elementCount; i++) {
                 set.add(valueType.getSerializer().deserialize(buffer));
             }
             return set;

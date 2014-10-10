@@ -1,5 +1,7 @@
 package arimitsu.sf.cql.v3.columntype;
 
+import arimitsu.sf.cql.v3.util.Notations;
+
 import java.nio.ByteBuffer;
 
 public class BooleanType implements ColumnType {
@@ -12,7 +14,7 @@ public class BooleanType implements ColumnType {
         @Override
         public Boolean deserialize(ByteBuffer buffer) {
             buffer.getInt();
-            return buffer.get() != 0;
+            return Notations.getBoolean(buffer);
         }
     };
 
