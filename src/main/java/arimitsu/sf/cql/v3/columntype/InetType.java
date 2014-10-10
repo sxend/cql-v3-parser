@@ -15,7 +15,7 @@ public class InetType implements ColumnType {
         @Override
         public InetAddress deserialize(ByteBuffer buffer) {
             int length = buffer.getInt();
-            return Notations.getINet(buffer, length); //Notations.getBytes(buffer, length));
+            return Notations.getINet(buffer, length);
         }
     };
 
