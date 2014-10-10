@@ -5,6 +5,10 @@ import arimitsu.sf.cql.v3.compressor.LZ4Compressor;
 import arimitsu.sf.cql.v3.compressor.NoneCompressor;
 import arimitsu.sf.cql.v3.compressor.SnappyCompressor;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by sxend on 14/06/08.
  */
@@ -23,12 +27,22 @@ public enum Compression {
         this.compressor = compressor;
     }
 
-    public static Compression valueOf(byte[] name) {
-        String strName = new String(name);
-        for (Compression c : values()) {
-            if (c.name.equals(strName)) return c;
+    private static Map<String, Compression> INDEX;
+
+    static {
+        Map<String, Compression> index = new HashMap<>();
+        for (Compression compression : values()) {
+            index.put(compression.name, compression);
         }
-        return NONE;
+        INDEX = Collections.unmodifiableMap(index);
+    }
+
+    public static Compression valueOf(byte[] name) {
+        String nameString = new String(name);
+        if (!INDEX.containsKey(nameString)) {
+            throw new IllegalArgumentException("invalid name: " + nameString);
+        }
+        return INDEX.get(nameString);
     }
 
 }
