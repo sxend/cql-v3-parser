@@ -10,10 +10,10 @@ public class DecimalType implements ColumnType {
     private static final Parser<BigDecimal> PARSER = new Parser<BigDecimal>() {
         @Override
         public BigDecimal parse(ByteBuffer buffer) {
-            buffer.getInt();
+            int length = buffer.getInt();
             int scale = buffer.getInt();
-//            byte[] bytes = Notation.getBytes(buffer,12);
-            return new BigDecimal(new BigInteger(Notations.getBytes(buffer, 4)), scale);
+            byte[] bytes = Notations.getBytes(buffer, length - Notations.INTEGER_BYTE_LEN);
+            return new BigDecimal(new BigInteger(bytes), scale);
         }
     };
 

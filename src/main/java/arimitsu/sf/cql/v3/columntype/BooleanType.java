@@ -6,7 +6,7 @@ public class BooleanType implements ColumnType {
     private static final Parser<Boolean> PARSER = new Parser<Boolean>() {
         @Override
         public Boolean parse(ByteBuffer buffer) {
-            int length = buffer.get();
+            buffer.getInt();
             return buffer.get() != 0;
         }
     };

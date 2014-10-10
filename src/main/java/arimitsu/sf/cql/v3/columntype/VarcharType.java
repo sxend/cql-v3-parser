@@ -8,7 +8,8 @@ public class VarcharType implements ColumnType {
     private static final Parser<String> PARSER = new Parser<String>() {
         @Override
         public String parse(ByteBuffer buffer) {
-            return Notations.getString(buffer, buffer.getInt());
+            int length = buffer.getInt();
+            return Notations.getString(buffer, length);
         }
     };
 

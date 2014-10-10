@@ -19,6 +19,9 @@ import java.util.UUID;
  */
 public class Notations {
 
+    public static final int INTEGER_BYTE_LEN = 4;
+    public static final int LONG_BYTE_LEN = INTEGER_BYTE_LEN * 2;
+
     public static class OptionNotation<A> {
         public final short id;
         public final A value;
@@ -110,7 +113,7 @@ public class Notations {
             buffer.get(bytes);
             return bytes;
         } else {
-            return null;
+            return new byte[0];
         }
     }
 
@@ -208,7 +211,7 @@ public class Notations {
     }
 
     public static byte[] int2Bytes(int s) {
-        byte[] bytes = new byte[4];
+        byte[] bytes = new byte[INTEGER_BYTE_LEN];
         bytes[0] = (byte) (0xff & (s >>> 24));
         bytes[1] = (byte) (0xff & (s >>> 16));
         bytes[2] = (byte) (0xff & (s >>> 8));
@@ -217,7 +220,7 @@ public class Notations {
     }
 
     public static byte[] long2Bytes(long s) {
-        byte[] bytes = new byte[8];
+        byte[] bytes = new byte[LONG_BYTE_LEN];
         bytes[0] = (byte) (0xff & (s >>> 56));
         bytes[1] = (byte) (0xff & (s >>> 48));
         bytes[2] = (byte) (0xff & (s >>> 40));

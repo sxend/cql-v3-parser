@@ -3,15 +3,16 @@ package arimitsu.sf.cql.v3.columntype;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public class VarintType implements ColumnType {
-    private static final Parser<BigDecimal> PARSER = new Parser<BigDecimal>() {
+    private static final Parser<BigInteger> PARSER = new Parser<BigInteger>() {
         @Override
-        public BigDecimal parse(ByteBuffer buffer) {
+        public BigInteger parse(ByteBuffer buffer) {
             int length = buffer.getInt(); // length 4
             byte[] bytes = Notations.getBytes(buffer, length);
-            return BigDecimal.valueOf(Notations.getLong(bytes));
+            return new BigInteger(bytes);
         }
     };
 
