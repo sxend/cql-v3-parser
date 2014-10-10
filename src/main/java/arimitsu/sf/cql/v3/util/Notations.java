@@ -194,19 +194,19 @@ public class Notations {
     }
 
     public static byte[] toStringList(List<String> list) {
-        byte[] length = short2Bytes((short) list.size());
+        byte[] length = toShortBytes((short) list.size());
         byte[] bytes = new byte[]{};
         for (String str : list) {
-            bytes = join(bytes, toString(str));
+            bytes = join(bytes, toStringBytes(str));
         }
         return join(length, bytes);
     }
 
     public static byte[] toStringMap(Map<String, String> maps) {
-        byte[] mapLength = short2Bytes((short) maps.size());
+        byte[] mapLength = toShortBytes((short) maps.size());
         byte[] result = new byte[0];
         for (Map.Entry<String, String> entry : maps.entrySet()) {
-            result = join(result, join(toString(entry.getKey()), toString(entry.getValue())));
+            result = join(result, join(toStringBytes(entry.getKey()), toStringBytes(entry.getValue())));
         }
         return join(mapLength, result);
     }
@@ -218,10 +218,10 @@ public class Notations {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        return join(int2Bytes(bytes.length), bytes);
+        return join(toIntBytes(bytes.length), bytes);
     }
 
-    public static byte[] toString(String str) {
+    public static byte[] toStringBytes(String str) {
         byte[] bytes;
         try {
             bytes = str.getBytes(STRING_CHARSET);
@@ -229,17 +229,17 @@ public class Notations {
             throw new RuntimeException(t);
         }
         int length = bytes.length;
-        return join(short2Bytes((short) length), bytes);
+        return join(toShortBytes((short) length), bytes);
     }
 
-    public static byte[] short2Bytes(short s) {
+    public static byte[] toShortBytes(short s) {
         byte[] bytes = new byte[2];
         bytes[0] = (byte) (0xff & (s >>> 8));
         bytes[1] = (byte) (0xff & s);
         return bytes;
     }
 
-    public static byte[] int2Bytes(int s) {
+    public static byte[] toIntBytes(int s) {
         byte[] bytes = new byte[INTEGER_BYTE_LEN];
         bytes[0] = (byte) (0xff & (s >>> 24));
         bytes[1] = (byte) (0xff & (s >>> 16));
@@ -248,7 +248,7 @@ public class Notations {
         return bytes;
     }
 
-    public static byte[] long2Bytes(long s) {
+    public static byte[] toLongBytes(long s) {
         byte[] bytes = new byte[LONG_BYTE_LEN];
         bytes[0] = (byte) (0xff & (s >>> 56));
         bytes[1] = (byte) (0xff & (s >>> 48));

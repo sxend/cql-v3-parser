@@ -79,7 +79,7 @@ class QuerySpec extends FlatSpec with Matchers {
     record(10).name should be("varchar_column")
     record(10).value should be("ｳﾞｧｰキャラカラム")
     record(11).name should be("blob_column")
-    record(11).value.asInstanceOf[Array[Byte]] should be(Notations.long2Bytes(0x0000000000000001))
+    record(11).value.asInstanceOf[Array[Byte]] should be(Notations.toLongBytes(0x0000000000000001))
     record(12).name should be("float_column")
     record(12).value should be(0.1.toFloat)
     record(13).name should be("map_column")

@@ -8,7 +8,7 @@ public class BigintType implements ColumnType {
     private static final Serializer<Long> SERIALIZER = new Serializer<Long>() {
         @Override
         public byte[] serialize(Long aLong) {
-            return Notations.long2Bytes(aLong);
+            return Notations.toLongBytes(aLong);
         }
 
         @Override
