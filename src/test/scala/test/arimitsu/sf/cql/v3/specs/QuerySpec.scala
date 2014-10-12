@@ -12,52 +12,37 @@ import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, Query, QueryFlags, 
 import arimitsu.sf.cql.v3.message.response.Ready
 import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
 import arimitsu.sf.cql.v3.util.Notations
-import org.scalatest._
-import test.arimitsu.sf.cql.v3.ChannelManager
+import org.scalatest.{OneInstancePerTest, BeforeAndAfter, Matchers, FunSuite}
+import test.arimitsu.sf.cql.v3.ClientManager
 
 import scala.collection.JavaConversions._
 
 /**
  * Created by sxend on 2014/10/02.
  */
-class QuerySpec extends FlatSpec with Matchers {
-  var client = ChannelManager.getInstance
-  "Options Response" should "be Supported" in {
+class QuerySpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest{
 
+  test("Options Response be Supported" ) {
+    val client = ClientManager.getInstance.startup
     val parser = new CQLParser().withCompressor(new NoneCompressor())
-
-    var body = {
-      new Startup(CQLVersion.CURRENT, Compression.NONE).toBody
-    }
-    var frame = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.STARTUP, body.length), body)
-    client.channel.write(parser.frameToByteBuffer(frame))
-    var resultBuffer = ByteBuffer.allocate(4096)
-    client.channel.read(resultBuffer)
-    resultBuffer.flip()
-    var resultFrame = parser.byteBufferToFrame(resultBuffer)
-    var message = parser.frameToMessage(resultFrame)
-    message.isInstanceOf[Ready] should be(true)
-
-    client = client.next
-
-    body = {
+    val query = {
       val param = new Builder()
         .setConsistency(Consistency.ONE)
         .setFlags(QueryFlags.VALUES.mask)
         .setValues(new ListValues()).build()
       new Query("select id,ascii_column,decimal_column,int_column,text_column,uuid_column,bigint_column,double_column,list_column,timestamp_column,varchar_column,blob_column,float_column,map_column,timeuuid_column,varint_column,boolean_column,inet_column,set_column from test.test_table1 where id = 1", param).toBody
     }
-    frame = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.QUERY, body.length), body)
+    val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.QUERY, query.length), query)
     client.channel.write(parser.frameToByteBuffer(frame))
-    resultBuffer = ByteBuffer.allocate(4096)
+    val resultBuffer = ByteBuffer.allocate(4096)
     client.channel.read(resultBuffer)
     resultBuffer.flip()
-    resultFrame = parser.byteBufferToFrame(resultBuffer)
-    message = parser.frameToMessage(resultFrame)
-    message.isInstanceOf[Rows] should be(true)
-    var rows = message.asInstanceOf[Rows]
+    val resultFrame = parser.byteBufferToFrame(resultBuffer)
+    val message = parser.frameToMessage(resultFrame)
+    message shouldBe a [Rows]
+    val rows = message.asInstanceOf[Rows]
     rows.rowsCount should be(1)
-    var record = rows.rowsContent(0)
+    val record = rows.rowsContent(0)
     record(0).name should be("id")
     record(0).value should be(1)
     record(1).name should be("ascii_column")
@@ -97,8 +82,8 @@ class QuerySpec extends FlatSpec with Matchers {
     record(18).name should be("set_column")
     record(18).value.asInstanceOf[java.util.Set[String]].toSet should be(Set("セットヴァリュー1", "セットヴァリュー2"))
   }
-  "update" should "be" in {
-    var c = client.next
+  test("update be") {
+    val client = ClientManager.getInstance.startup
     val parser = new CQLParser().withCompressor(new NoneCompressor())
 
     val pre = s"update test.test_table1 set varchar_column = ? where id = ?"
@@ -109,17 +94,16 @@ class QuerySpec extends FlatSpec with Matchers {
         .setValues(new ListValues()).build()
       new Prepare(pre).toBody
     }
-    val pframe = new Frame(new Header(Version.REQUEST, Flags.NONE, c.streamId, Opcode.PREPARE, body.length), body)
-    c.channel.write(parser.frameToByteBuffer(pframe))
+    val pframe = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.PREPARE, body.length), body)
+    client.channel.write(parser.frameToByteBuffer(pframe))
     var resultBuffer = ByteBuffer.allocate(4096)
-    c.channel.read(resultBuffer)
+    client.channel.read(resultBuffer)
     resultBuffer.flip()
     var resultFrame = parser.byteBufferToFrame(resultBuffer)
     var message = parser.frameToMessage(resultFrame)
     message.isInstanceOf[Prepared] should be(true)
     var prepared = message.asInstanceOf[Prepared]
     val id = prepared.id
-    c = c.next
     val varchar = "ｳﾞｧｰキャラカラム"
     val updateBody = {
       val param = new Builder()
@@ -128,15 +112,15 @@ class QuerySpec extends FlatSpec with Matchers {
         .setValues({
         val list = new ListValues()
         list.put(ColumnTypes.VARCHAR.builder.build(), varchar)
-        list.put(ColumnTypes.INT.builder.build(),1)
+        list.put(ColumnTypes.INT.builder.build(), 1)
         list
       }).build()
-      new Execute(id,param).toBody
+      new Execute(id, param).toBody
     }
-    val upframe  = new Frame(new Header(Version.REQUEST, Flags.NONE, c.streamId, Opcode.EXECUTE, updateBody.length), updateBody)
-    c.channel.write(parser.frameToByteBuffer(upframe))
+    val upframe = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.EXECUTE, updateBody.length), updateBody)
+    client.channel.write(parser.frameToByteBuffer(upframe))
     resultBuffer = ByteBuffer.allocate(4096)
-    c.channel.read(resultBuffer)
+    client.channel.read(resultBuffer)
     resultBuffer.flip()
     resultFrame = parser.byteBufferToFrame(resultBuffer)
     message = parser.frameToMessage(resultFrame)
