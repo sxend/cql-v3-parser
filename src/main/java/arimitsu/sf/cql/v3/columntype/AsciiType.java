@@ -12,7 +12,7 @@ public class AsciiType implements ColumnType {
 
         @Override
         public byte[] serialize(String string) {
-            return Notations.toLongString(string);
+            return Notations.toStringBytes(string);
         }
 
         @Override

@@ -15,6 +15,6 @@ public class Prepare extends Request {
 
     @Override
     public byte[] toBody() {
-        return Notations.toLongString(query);
+        return Notations.toLongStringWithIntLength(query);
     }
 }

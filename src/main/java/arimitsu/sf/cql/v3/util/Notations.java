@@ -185,7 +185,7 @@ public class Notations {
         byte[] length = toShortBytes((short) list.size());
         byte[] bytes = new byte[]{};
         for (String str : list) {
-            bytes = join(bytes, toStringBytes(str));
+            bytes = join(bytes, toStringBytesWithLength(str));
         }
         return join(length, bytes);
     }
@@ -194,22 +194,22 @@ public class Notations {
         byte[] mapLength = toShortBytes((short) maps.size());
         byte[] result = new byte[0];
         for (Map.Entry<String, String> entry : maps.entrySet()) {
-            result = join(result, join(toStringBytes(entry.getKey()), toStringBytes(entry.getValue())));
+            result = join(result, join(toStringBytesWithLength(entry.getKey()), toStringBytesWithLength(entry.getValue())));
         }
         return join(mapLength, result);
     }
 
-    public static byte[] toLongString(String str) {
-        byte[] bytes = toUTF8Bytes(str);
+    public static byte[] toLongStringWithIntLength(String str) {
+        byte[] bytes = toStringBytes(str);
         return join(toIntBytes(bytes.length), bytes);
     }
 
-    public static byte[] toStringBytes(String str) {
-        byte[] bytes = toUTF8Bytes(str);
+    public static byte[] toStringBytesWithLength(String str) {
+        byte[] bytes = toStringBytes(str);
         int length = bytes.length;
         return join(toShortBytes((short) length), bytes);
     }
-    public static byte[] toUTF8Bytes(String str){
+    public static byte[] toStringBytes(String str){
         byte[] bytes;
         try {
             bytes = str.getBytes(STRING_CHARSET);

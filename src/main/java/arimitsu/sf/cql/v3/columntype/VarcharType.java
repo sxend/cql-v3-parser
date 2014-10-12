@@ -8,7 +8,7 @@ public class VarcharType implements ColumnType {
     private static final Serializer<String> SERIALIZER = new Serializer<String>() {
         @Override
         public byte[] serialize(String s) {
-            byte[] bytes = Notations.toUTF8Bytes(s);
+            byte[] bytes = Notations.toStringBytes(s);
             return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
