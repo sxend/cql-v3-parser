@@ -200,24 +200,23 @@ public class Notations {
     }
 
     public static byte[] toLongString(String str) {
-        byte[] bytes;
-        try {
-            bytes = str.getBytes(STRING_CHARSET);
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
+        byte[] bytes = toUTF8Bytes(str);
         return join(toIntBytes(bytes.length), bytes);
     }
 
     public static byte[] toStringBytes(String str) {
+        byte[] bytes = toUTF8Bytes(str);
+        int length = bytes.length;
+        return join(toShortBytes((short) length), bytes);
+    }
+    public static byte[] toUTF8Bytes(String str){
         byte[] bytes;
         try {
             bytes = str.getBytes(STRING_CHARSET);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        int length = bytes.length;
-        return join(toShortBytes((short) length), bytes);
+        return bytes;
     }
 
     public static byte[] toShortBytes(short s) {

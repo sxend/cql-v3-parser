@@ -89,11 +89,12 @@ public class QueryParameters {
 
         @Override
         public byte[] toBytes() {
-            byte[] result = toShortBytes((short) list.size());
-            for (byte[] bytes : list) {
-                result = join(result, join(toIntBytes(bytes.length), bytes));
+            byte[] bytes = new byte[0];
+            for (byte[] b : list) {
+                bytes = join(bytes, b);
             }
-            return result;
+            bytes = join(toShortBytes((short) list.size()), bytes);
+            return bytes;
         }
     }
 
