@@ -25,4 +25,16 @@ public class TimeuuidType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<TimeuuidType> {
+        @Override
+        public TimeuuidType build(ByteBuffer buffer) {
+            return new TimeuuidType();
+        }
+
+        @Override
+        public TimeuuidType build(ColumnType... childTypes) {
+            return new TimeuuidType();
+        }
+    }
 }

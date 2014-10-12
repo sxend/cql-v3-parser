@@ -43,4 +43,22 @@ public class TupleType implements ColumnType {
     public Serializer<List<Object>> getSerializer() {
         return Serializer;
     }
+
+    public static class Builder implements ColumnTypeBuilder<TupleType> {
+        @Override
+        public TupleType build(ByteBuffer buffer) {
+            int length = Notations.getShort(buffer);
+            List<ColumnType> columnTypes = new ArrayList<>();
+            for (int i = 0; i < length; i++) {
+                ColumnTypes valueType = ColumnTypes.valueOf(Notations.getShort(buffer));
+                columnTypes.add(valueType.builder.build(buffer));
+            }
+            return new TupleType(columnTypes.toArray(new ColumnType[columnTypes.size()]));
+        }
+
+        @Override
+        public TupleType build(ColumnType... childTypes) {
+            return new TupleType(childTypes);
+        }
+    }
 }

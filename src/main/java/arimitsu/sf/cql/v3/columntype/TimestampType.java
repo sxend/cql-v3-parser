@@ -26,4 +26,16 @@ public class TimestampType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<TimestampType> {
+        @Override
+        public TimestampType build(ByteBuffer buffer) {
+            return new TimestampType();
+        }
+
+        @Override
+        public TimestampType build(ColumnType... childTypes) {
+            return new TimestampType();
+        }
+    }
 }

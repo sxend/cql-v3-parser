@@ -3,6 +3,7 @@ package arimitsu.sf.cql.v3.columntype;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,5 +32,24 @@ public class UDTType implements ColumnType {
     @Override
     public Serializer<?> getSerializer() {
         return null;
+    }
+
+    public static class Builder implements ColumnTypeBuilder<UDTType> {
+        @Override
+        public UDTType build(ByteBuffer buffer) {
+            String keySpace = Notations.getString(buffer);
+            String udtName = Notations.getString(buffer);
+            int fieldCount = Notations.getShort(buffer);
+            Map<String, Notations.OptionNotation<ColumnType>> udtTypes = new HashMap<>();
+            for (int i = 0; i < fieldCount; i++) {
+                udtTypes.put(Notations.getString(buffer), Notations.getOption(buffer, UDTType.COLUMN_TYPE_OPTION_PARSER));
+            }
+            return new UDTType(keySpace, udtName, fieldCount, udtTypes);
+        }
+
+        @Override
+        public UDTType build(ColumnType... childTypes) {
+            return null;
+        }
     }
 }

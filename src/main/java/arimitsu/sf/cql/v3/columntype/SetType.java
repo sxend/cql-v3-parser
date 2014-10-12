@@ -47,4 +47,17 @@ public class SetType implements ColumnType {
     public Serializer<Set<Object>> getSerializer() {
         return Serializer;
     }
+
+    public static class Builder implements ColumnTypeBuilder<SetType> {
+        @Override
+        public SetType build(ByteBuffer buffer) {
+            ColumnTypes valueType = ColumnTypes.valueOf(Notations.getShort(buffer));
+            return new SetType(valueType.builder.build(buffer));
+        }
+
+        @Override
+        public SetType build(ColumnType... childTypes) {
+            return new SetType(childTypes[0]);
+        }
+    }
 }

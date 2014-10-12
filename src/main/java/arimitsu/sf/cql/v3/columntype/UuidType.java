@@ -25,4 +25,16 @@ public class UuidType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<UuidType> {
+        @Override
+        public UuidType build(ByteBuffer buffer) {
+            return new UuidType();
+        }
+
+        @Override
+        public UuidType build(ColumnType... childTypes) {
+            return new UuidType();
+        }
+    }
 }

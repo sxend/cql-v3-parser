@@ -23,4 +23,16 @@ public class BlobType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<BlobType> {
+        @Override
+        public BlobType build(ByteBuffer buffer) {
+            return new BlobType();
+        }
+
+        @Override
+        public BlobType build(ColumnType... childTypes) {
+            return new BlobType();
+        }
+    }
 }

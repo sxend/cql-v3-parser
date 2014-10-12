@@ -24,4 +24,16 @@ public class IntType implements ColumnType {
     public Serializer<Integer> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<IntType> {
+        @Override
+        public IntType build(ByteBuffer buffer) {
+            return new IntType();
+        }
+
+        @Override
+        public IntType build(ColumnType... childTypes) {
+            return new IntType();
+        }
+    }
 }

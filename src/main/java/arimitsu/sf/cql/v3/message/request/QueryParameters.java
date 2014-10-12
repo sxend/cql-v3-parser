@@ -1,6 +1,8 @@
 package arimitsu.sf.cql.v3.message.request;
 
 import arimitsu.sf.cql.v3.Consistency;
+import arimitsu.sf.cql.v3.columntype.ColumnType;
+import arimitsu.sf.cql.v3.columntype.Serializer;
 import arimitsu.sf.cql.v3.util.Notations;
 
 import java.util.ArrayList;
@@ -64,15 +66,14 @@ public class QueryParameters {
     public static class NamedValues implements Values {
         private final Map<String, byte[]> map = new HashMap<>();
 
-        public void put(String name, byte[] value) {
-            map.put(name, value);
+        public void put(ColumnType columnType, String name, Object value) {
+            map.put(name, ((Serializer<Object>) columnType.getSerializer()).serialize(value));
         }
 
         @Override
         public byte[] toBytes() {
             byte[] result = new byte[0];
             for (Map.Entry<String, byte[]> entry : map.entrySet()) {
-
                 result = join(result, join(Notations.toStringBytes(entry.getKey()), join(toIntBytes(entry.getValue().length), entry.getValue())));
             }
             return result;
@@ -82,12 +83,8 @@ public class QueryParameters {
     public static class ListValues implements Values {
         private final List<byte[]> list = new ArrayList<>();
 
-        public void put(byte[] value) {
-            list.add(value);
-        }
-
-        public void putInt(int value) {
-            list.add(Notations.toIntBytes(value));
+        public void put(ColumnType columnType, Object object) {
+            list.add(((Serializer<Object>) columnType.getSerializer()).serialize(object));
         }
 
         @Override

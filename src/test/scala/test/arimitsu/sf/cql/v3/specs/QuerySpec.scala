@@ -94,6 +94,5 @@ class QuerySpec extends FlatSpec with Matchers {
     record(17).value.toString should be(InetAddress.getByName("20.20.20.20").toString)
     record(18).name should be("set_column")
     record(18).value.asInstanceOf[java.util.Set[String]].toSet should be(Set("セットヴァリュー1", "セットヴァリュー2"))
-
   }
 }
