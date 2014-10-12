@@ -63,14 +63,6 @@ public class Notations {
         return result;
     }
 
-//    public static float getFloat(ByteBuffer buffer){
-//        return buffer.getFloat();
-//    }
-//
-//    public static double getDouble(ByteBuffer buffer){
-//        return buffer.getDouble();
-//    }
-
     public static String getString(ByteBuffer buffer, int length) {
         if (length <= 0) return EMPTY;
         byte[] bytes = new byte[length];
