@@ -14,7 +14,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
  * Created by sxend on 14/10/13.
  */
 class OptionsSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
-  test("option") {
+  test("option response be Supported") {
     val client = ClientManager.getInstance
     val parser = new CQLParser().withCompressor(new NoneCompressor())
     val optionsBuffer = {

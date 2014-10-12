@@ -22,7 +22,7 @@ import scala.collection.JavaConversions._
  */
 class QuerySpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest{
 
-  test("Options Response be Supported" ) {
+  test("testdata response test") {
     val client = ClientManager.getInstance.startup
     val parser = new CQLParser().withCompressor(new NoneCompressor())
     val query = {
@@ -101,8 +101,8 @@ class QuerySpec extends FunSuite with Matchers with BeforeAndAfter with OneInsta
     resultBuffer.flip()
     var resultFrame = parser.byteBufferToFrame(resultBuffer)
     var message = parser.frameToMessage(resultFrame)
-    message.isInstanceOf[Prepared] should be(true)
-    var prepared = message.asInstanceOf[Prepared]
+    message shouldBe a [Prepared]
+    val prepared = message.asInstanceOf[Prepared]
     val id = prepared.id
     val varchar = "ｳﾞｧｰキャラカラム"
     val updateBody = {
