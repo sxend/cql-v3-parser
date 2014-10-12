@@ -1,6 +1,7 @@
 package arimitsu.sf.cql.v3.message.response;
 
 import arimitsu.sf.cql.v3.columntype.ColumnType;
+import arimitsu.sf.cql.v3.columntype.ColumnTypes;
 import arimitsu.sf.cql.v3.message.response.result.ColumnSpec;
 import arimitsu.sf.cql.v3.util.Notations;
 
@@ -50,7 +51,7 @@ public class Metadata {
                 tableName = Notations.getString(buffer);
             }
             String columnName = Notations.getString(buffer);
-            ColumnType columnType = ColumnType.Factory.fromBuffer(buffer);
+            ColumnType columnType = ColumnTypes.valueOf(Notations.getShort(buffer)).builder.build(buffer);
             columnSpec.add(new ColumnSpec(keySpace, tableName, columnName, columnType));
         }
         return new Metadata(flags, columnsCount, pagingState, globalTableSpec, columnSpec);
