@@ -24,4 +24,16 @@ public class VarcharType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<VarcharType> {
+        @Override
+        public VarcharType build(ByteBuffer buffer) {
+            return new VarcharType();
+        }
+
+        @Override
+        public VarcharType build(ColumnType... childTypes) {
+            return new VarcharType();
+        }
+    }
 }

@@ -27,4 +27,16 @@ public class BooleanType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<BooleanType> {
+        @Override
+        public BooleanType build(ByteBuffer buffer) {
+            return new BooleanType();
+        }
+
+        @Override
+        public BooleanType build(ColumnType... childTypes) {
+            return new BooleanType();
+        }
+    }
 }

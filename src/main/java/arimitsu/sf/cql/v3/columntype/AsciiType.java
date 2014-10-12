@@ -12,7 +12,7 @@ public class AsciiType implements ColumnType {
 
         @Override
         public byte[] serialize(String string) {
-            return Notations.toLongString(string);
+            return Notations.toStringBytes(string);
         }
 
         @Override
@@ -25,5 +25,17 @@ public class AsciiType implements ColumnType {
     @Override
     public Serializer<?> getSerializer() {
         return SERIALIZER;
+    }
+
+    public static class Builder implements ColumnTypeBuilder<AsciiType> {
+        @Override
+        public AsciiType build(ByteBuffer buffer) {
+            return new AsciiType();
+        }
+
+        @Override
+        public AsciiType build(ColumnType... childTypes) {
+            return new AsciiType();
+        }
     }
 }

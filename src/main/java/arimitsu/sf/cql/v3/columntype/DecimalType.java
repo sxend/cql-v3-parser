@@ -29,4 +29,16 @@ public class DecimalType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<DecimalType> {
+        @Override
+        public DecimalType build(ByteBuffer buffer) {
+            return new DecimalType();
+        }
+
+        @Override
+        public DecimalType build(ColumnType... childTypes) {
+            return new DecimalType();
+        }
+    }
 }

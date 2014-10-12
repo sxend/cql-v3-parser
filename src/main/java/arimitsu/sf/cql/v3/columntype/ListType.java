@@ -46,4 +46,17 @@ public class ListType implements ColumnType {
     public Serializer<List<Object>> getSerializer() {
         return Serializer;
     }
+
+    public static class Builder implements ColumnTypeBuilder<ListType> {
+        @Override
+        public ListType build(ByteBuffer buffer) {
+            ColumnTypes valueType = ColumnTypes.valueOf(Notations.getShort(buffer));
+            return new ListType(valueType.builder.build(buffer));
+        }
+
+        @Override
+        public ListType build(ColumnType... childTypes) {
+            return new ListType(childTypes[0]);
+        }
+    }
 }

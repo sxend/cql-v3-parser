@@ -18,7 +18,7 @@ public class Query extends Request {
 
     @Override
     public byte[] toBody() {
-        byte[] query = Notations.toLongString(this.string);
+        byte[] query = Notations.toLongStringWithIntLength(this.string);
         byte[] parameters = this.parameters.toBytes();
         return Notations.join(query, parameters);
     }

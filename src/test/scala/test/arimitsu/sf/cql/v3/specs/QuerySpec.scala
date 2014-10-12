@@ -5,11 +5,12 @@ import java.nio.ByteBuffer
 
 import arimitsu.sf.cql.v3.Frame.Header
 import arimitsu.sf.cql.v3._
+import arimitsu.sf.cql.v3.columntype.ColumnTypes
 import arimitsu.sf.cql.v3.compressor.NoneCompressor
 import arimitsu.sf.cql.v3.message.request.QueryParameters.{Builder, ListValues}
-import arimitsu.sf.cql.v3.message.request.{Query, QueryFlags, Startup}
+import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, Query, QueryFlags, Startup}
 import arimitsu.sf.cql.v3.message.response.Ready
-import arimitsu.sf.cql.v3.message.response.result.Rows
+import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
 import arimitsu.sf.cql.v3.util.Notations
 import org.scalatest._
 import test.arimitsu.sf.cql.v3.ChannelManager
@@ -20,8 +21,9 @@ import scala.collection.JavaConversions._
  * Created by sxend on 2014/10/02.
  */
 class QuerySpec extends FlatSpec with Matchers {
+  var client = ChannelManager.getInstance
   "Options Response" should "be Supported" in {
-    var client = ChannelManager.getInstance
+
     val parser = new CQLParser().withCompressor(new NoneCompressor())
 
     var body = {
@@ -94,6 +96,50 @@ class QuerySpec extends FlatSpec with Matchers {
     record(17).value.toString should be(InetAddress.getByName("20.20.20.20").toString)
     record(18).name should be("set_column")
     record(18).value.asInstanceOf[java.util.Set[String]].toSet should be(Set("セットヴァリュー1", "セットヴァリュー2"))
+  }
+  "update" should "be" in {
+    var c = client.next
+    val parser = new CQLParser().withCompressor(new NoneCompressor())
 
+    val pre = s"update test.test_table1 set varchar_column = ? where id = ?"
+    val body = {
+      val param = new Builder()
+        .setConsistency(Consistency.ONE)
+        .setFlags(QueryFlags.VALUES.mask)
+        .setValues(new ListValues()).build()
+      new Prepare(pre).toBody
+    }
+    val pframe = new Frame(new Header(Version.REQUEST, Flags.NONE, c.streamId, Opcode.PREPARE, body.length), body)
+    c.channel.write(parser.frameToByteBuffer(pframe))
+    var resultBuffer = ByteBuffer.allocate(4096)
+    c.channel.read(resultBuffer)
+    resultBuffer.flip()
+    var resultFrame = parser.byteBufferToFrame(resultBuffer)
+    var message = parser.frameToMessage(resultFrame)
+    message.isInstanceOf[Prepared] should be(true)
+    var prepared = message.asInstanceOf[Prepared]
+    val id = prepared.id
+    c = c.next
+    val varchar = "ｳﾞｧｰキャラカラム"
+    val updateBody = {
+      val param = new Builder()
+        .setConsistency(Consistency.ONE)
+        .setFlags(QueryFlags.VALUES.mask)
+        .setValues({
+        val list = new ListValues()
+        list.put(ColumnTypes.VARCHAR.builder.build(), varchar)
+        list.put(ColumnTypes.INT.builder.build(),1)
+        list
+      }).build()
+      new Execute(id,param).toBody
+    }
+    val upframe  = new Frame(new Header(Version.REQUEST, Flags.NONE, c.streamId, Opcode.EXECUTE, updateBody.length), updateBody)
+    c.channel.write(parser.frameToByteBuffer(upframe))
+    resultBuffer = ByteBuffer.allocate(4096)
+    c.channel.read(resultBuffer)
+    resultBuffer.flip()
+    resultFrame = parser.byteBufferToFrame(resultBuffer)
+    message = parser.frameToMessage(resultFrame)
+    message.isInstanceOf[arimitsu.sf.cql.v3.message.response.result.Void] should be(true)
   }
 }

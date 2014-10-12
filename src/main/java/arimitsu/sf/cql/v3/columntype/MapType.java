@@ -51,4 +51,18 @@ public class MapType implements ColumnType {
     public Serializer<Map<Object, Object>> getSerializer() {
         return Serializer;
     }
+
+    public static class Builder implements ColumnTypeBuilder<MapType> {
+        @Override
+        public MapType build(ByteBuffer buffer) {
+            ColumnTypes keyType = ColumnTypes.valueOf(Notations.getShort(buffer));
+            ColumnTypes valueType = ColumnTypes.valueOf(Notations.getShort(buffer));
+            return new MapType(keyType.builder.build(buffer), valueType.builder.build(buffer));
+        }
+
+        @Override
+        public MapType build(ColumnType... childTypes) {
+            return new MapType(childTypes[0], childTypes[1]);
+        }
+    }
 }

@@ -18,23 +18,38 @@ public class UDTType implements ColumnType {
     public static final Notations.OptionParser<ColumnType> COLUMN_TYPE_OPTION_PARSER = new Notations.OptionParser<ColumnType>() {
         @Override
         public ColumnType parse(ByteBuffer buffer) {
-            return ColumnType.Factory.fromBuffer(buffer);
+            return ColumnTypes.valueOf(Notations.getShort(buffer)).builder.build(buffer);
         }
     };
 
-    public UDTType(ByteBuffer buffer) {
-        this.keySpace = Notations.getString(buffer);
-        this.udtName = Notations.getString(buffer);
-        this.fieldCount = Notations.getShort(buffer);
-        Map<String, Notations.OptionNotation<ColumnType>> map = new HashMap<>();
-        for (int i = 0; i < fieldCount; i++) {
-            map.put(Notations.getString(buffer), Notations.getOption(buffer, COLUMN_TYPE_OPTION_PARSER));
-        }
-        this.udtTypes = map;
+    public UDTType(String keySpace, String udtName, int fieldCount, Map<String, Notations.OptionNotation<ColumnType>> udtTypes) {
+        this.keySpace = keySpace;
+        this.udtName = udtName;
+        this.fieldCount = fieldCount;
+        this.udtTypes = udtTypes;
     }
 
     @Override
     public Serializer<?> getSerializer() {
         return null;
+    }
+
+    public static class Builder implements ColumnTypeBuilder<UDTType> {
+        @Override
+        public UDTType build(ByteBuffer buffer) {
+            String keySpace = Notations.getString(buffer);
+            String udtName = Notations.getString(buffer);
+            int fieldCount = Notations.getShort(buffer);
+            Map<String, Notations.OptionNotation<ColumnType>> udtTypes = new HashMap<>();
+            for (int i = 0; i < fieldCount; i++) {
+                udtTypes.put(Notations.getString(buffer), Notations.getOption(buffer, UDTType.COLUMN_TYPE_OPTION_PARSER));
+            }
+            return new UDTType(keySpace, udtName, fieldCount, udtTypes);
+        }
+
+        @Override
+        public UDTType build(ColumnType... childTypes) {
+            return null;
+        }
     }
 }

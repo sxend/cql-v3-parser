@@ -25,4 +25,16 @@ public class InetType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<InetType> {
+        @Override
+        public InetType build(ByteBuffer buffer) {
+            return new InetType();
+        }
+
+        @Override
+        public InetType build(ColumnType... childTypes) {
+            return new InetType();
+        }
+    }
 }

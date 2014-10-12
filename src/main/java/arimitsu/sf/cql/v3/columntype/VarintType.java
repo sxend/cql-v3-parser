@@ -25,4 +25,16 @@ public class VarintType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<VarintType> {
+        @Override
+        public VarintType build(ByteBuffer buffer) {
+            return new VarintType();
+        }
+
+        @Override
+        public VarintType build(ColumnType... childTypes) {
+            return new VarintType();
+        }
+    }
 }

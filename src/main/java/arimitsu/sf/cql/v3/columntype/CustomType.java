@@ -24,4 +24,17 @@ public class CustomType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static final class Builder implements ColumnTypeBuilder<CustomType> {
+
+        @Override
+        public CustomType build(ByteBuffer buffer) {
+            return new CustomType();
+        }
+
+        @Override
+        public CustomType build(ColumnType... childTypes) {
+            return new CustomType();
+        }
+    }
 }

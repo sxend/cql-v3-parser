@@ -23,4 +23,16 @@ public class BigintType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<BigintType> {
+        @Override
+        public BigintType build(ByteBuffer buffer) {
+            return new BigintType();
+        }
+
+        @Override
+        public BigintType build(ColumnType... childTypes) {
+            return new BigintType();
+        }
+    }
 }

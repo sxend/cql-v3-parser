@@ -23,4 +23,16 @@ public class FloatType implements ColumnType {
     public Serializer<?> getSerializer() {
         return SERIALIZER;
     }
+
+    public static class Builder implements ColumnTypeBuilder<FloatType> {
+        @Override
+        public FloatType build(ByteBuffer buffer) {
+            return new FloatType();
+        }
+
+        @Override
+        public FloatType build(ColumnType... childTypes) {
+            return new FloatType();
+        }
+    }
 }

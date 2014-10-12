@@ -10,7 +10,6 @@ import java.util.List;
  * Created by sxend on 2014/10/09.
  */
 public class TupleType implements ColumnType {
-    public final int length;
     public final ColumnType[] valueTypes;
     private final Serializer<List<Object>> Serializer = new Serializer<List<Object>>() {
         @Override
@@ -23,7 +22,7 @@ public class TupleType implements ColumnType {
             }
             bytes = Notations.join(Notations.toIntBytes(elementCount), bytes);
             bytes = Notations.join(Notations.toIntBytes(bytes.length), bytes);
-            return new byte[0];
+            return bytes;
         }
 
         @Override
@@ -36,17 +35,30 @@ public class TupleType implements ColumnType {
         }
     };
 
-    public TupleType(ByteBuffer buffer) {
-        this.length = Notations.getShort(buffer);
-        List<ColumnType> columnTypes = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            columnTypes.add(ColumnType.Factory.fromBuffer(buffer));
-        }
-        this.valueTypes = columnTypes.toArray(new ColumnType[columnTypes.size()]);
+    public TupleType(ColumnType[] valueTypes) {
+        this.valueTypes = valueTypes;
     }
 
     @Override
     public Serializer<List<Object>> getSerializer() {
         return Serializer;
+    }
+
+    public static class Builder implements ColumnTypeBuilder<TupleType> {
+        @Override
+        public TupleType build(ByteBuffer buffer) {
+            int length = Notations.getShort(buffer);
+            List<ColumnType> columnTypes = new ArrayList<>();
+            for (int i = 0; i < length; i++) {
+                ColumnTypes valueType = ColumnTypes.valueOf(Notations.getShort(buffer));
+                columnTypes.add(valueType.builder.build(buffer));
+            }
+            return new TupleType(columnTypes.toArray(new ColumnType[columnTypes.size()]));
+        }
+
+        @Override
+        public TupleType build(ColumnType... childTypes) {
+            return new TupleType(childTypes);
+        }
     }
 }
