@@ -6,9 +6,8 @@ public class DoubleType implements ColumnType {
     private static final Serializer<Double> SERIALIZER = new Serializer<Double>() {
         @Override
         public byte[] serialize(Double aDouble) {
-            int arraySize = Double.SIZE / Byte.SIZE;
-            ByteBuffer buffer = ByteBuffer.allocate(arraySize);
-            return buffer.putDouble(aDouble).array();
+            ByteBuffer buffer = ByteBuffer.allocate(Double.BYTES + Integer.BYTES);
+            return buffer.putInt(Double.BYTES).putDouble(aDouble).array();
         }
 
         @Override
