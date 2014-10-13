@@ -14,7 +14,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
 class FloatSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val FLOAT_COLUMN_NAME = "float_column"
   val TEST_DATA: Float = Math.random().toFloat * 100f
-  test("float_column insert, select and delete") {
+  test(s"$FLOAT_COLUMN_NAME insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${FLOAT_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {

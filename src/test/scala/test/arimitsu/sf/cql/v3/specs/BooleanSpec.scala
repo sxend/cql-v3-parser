@@ -16,7 +16,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
 class BooleanSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val BOOLEAN_COLUMN_NAME = "boolean_column"
   val TEST_DATA = Math.random() > 0.5
-  test("boolean insert, select and delete") {
+  test(s"$BOOLEAN_COLUMN_NAME insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${BOOLEAN_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {

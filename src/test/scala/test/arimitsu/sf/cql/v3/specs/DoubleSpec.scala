@@ -14,7 +14,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
 class DoubleSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val DOUBLE_COLUMN_NAME = "double_column"
   val TEST_DATA:Double = Math.random() * 100d
-  test("double_column insert, select and delete") {
+  test(s"$DOUBLE_COLUMN_NAME insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${DOUBLE_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {

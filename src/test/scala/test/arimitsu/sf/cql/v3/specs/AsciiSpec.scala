@@ -14,7 +14,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
 class AsciiSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val ASCII_COLUMN_NAME = "ascii_column"
   val TEST_DATA = "ASCII COLUMN!"
-  test("ascii column insert, select and delete") {
+  test(s"$ASCII_COLUMN_NAME column insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${ASCII_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {

@@ -20,7 +20,7 @@ class BlobSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstan
     buffer.putLong(123456L)
     buffer.array()
   }
-  test("blob_column insert, select and delete") {
+  test(s"$BLOB_COLUMN_NAME insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${BLOB_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {
