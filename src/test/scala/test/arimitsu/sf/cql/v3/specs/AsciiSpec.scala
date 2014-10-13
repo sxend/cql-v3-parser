@@ -14,14 +14,14 @@ import test.arimitsu.sf.cql.v3.ClientManager
 class AsciiSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val ASCII_COLUMN_NAME = "ascii_column"
   val TEST_DATA = "ASCII COLUMN!"
-  test("ascii spec") {
+  test("ascii column insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${ASCII_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {
       val message = client.request(Opcode.PREPARE, new Prepare(insertQuery).toBody)
       message match {
         case error: arimitsu.sf.cql.v3.message.response.Error =>
-          println(error.message)
+          fail(error.message)
         case _ =>
       }
       message shouldBe a[Prepared]
@@ -33,7 +33,6 @@ class AsciiSpec extends FunSuite with Matchers with BeforeAndAfter with OneInsta
         val list = new ListValues()
         list.put(ColumnTypes.INT.builder.build(), 3)
         list.put(ColumnTypes.ASCII.builder.build(), TEST_DATA)
-        println("insert -> " + list)
         new QueryParameters.Builder()
           .setConsistency(Consistency.ALL)
           .setFlags(QueryFlags.VALUES.mask)
@@ -43,7 +42,7 @@ class AsciiSpec extends FunSuite with Matchers with BeforeAndAfter with OneInsta
       val message = client.request(Opcode.EXECUTE, new Execute(insertPreparedId, param).toBody)
       message match {
         case error: arimitsu.sf.cql.v3.message.response.Error =>
-          println(error.message)
+          fail(error.message)
         case _ =>
       }
       message shouldBe a[arimitsu.sf.cql.v3.message.response.result.Void]
@@ -93,7 +92,7 @@ class AsciiSpec extends FunSuite with Matchers with BeforeAndAfter with OneInsta
       val message = client.request(Opcode.EXECUTE, new Execute(deletePreparedId, param).toBody)
       message match {
         case error: arimitsu.sf.cql.v3.message.response.Error =>
-          println(error.message)
+          fail(error.message)
         case _ =>
       }
       message shouldBe a[arimitsu.sf.cql.v3.message.response.result.Void]
