@@ -11,7 +11,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
 /**
  * Created by sxend on 14/10/13.
  */
-class VarcharSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
+class VarcharUpdateSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   test("prepare, update, select check for [varchar]") {
     val client = ClientManager.getInstance.startup()
     val prepareQuery = s"update test.test_table1 set varchar_column = ? where id = ?"
