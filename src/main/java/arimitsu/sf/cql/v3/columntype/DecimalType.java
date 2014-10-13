@@ -11,7 +11,7 @@ public class DecimalType implements ColumnType {
         @Override
         public byte[] serialize(BigDecimal bigDecimal) {
             int scale = bigDecimal.scale();
-            byte[] bytes = Notations.join(Notations.toIntBytes(scale), bigDecimal.toBigInteger().toByteArray());
+            byte[] bytes = Notations.join(Notations.toIntBytes(scale), bigDecimal.unscaledValue().toByteArray());
             return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
