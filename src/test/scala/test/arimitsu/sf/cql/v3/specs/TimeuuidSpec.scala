@@ -1,19 +1,18 @@
 package test.arimitsu.sf.cql.v3.specs
 
-import java.util.{UUID, Date}
+import java.util.UUID
 
-import arimitsu.sf.cql.v3.util.Notations
-import arimitsu.sf.cql.v3.{Consistency, Opcode}
 import arimitsu.sf.cql.v3.columntype.ColumnTypes
-import arimitsu.sf.cql.v3.message.request.{Execute, QueryFlags, QueryParameters, Prepare}
 import arimitsu.sf.cql.v3.message.request.QueryParameters.ListValues
-import arimitsu.sf.cql.v3.message.response.result.{Rows, Prepared}
-import org.scalatest.{OneInstancePerTest, BeforeAndAfter, Matchers, FunSuite}
+import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, QueryFlags, QueryParameters}
+import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
+import arimitsu.sf.cql.v3.{Consistency, Opcode}
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers, OneInstancePerTest, _}
 import test.arimitsu.sf.cql.v3.ClientManager
-import org.scalatest._
+
 /**
-* Created by sxend on 14/10/13.
-*/
+ * Created by sxend on 14/10/13.
+ */
 @Ignore
 class TimeuuidSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val TIMEUUID_COLUMN_NAME = "timeuuid_column"

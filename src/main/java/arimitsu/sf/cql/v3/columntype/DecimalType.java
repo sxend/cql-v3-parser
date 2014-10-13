@@ -12,7 +12,7 @@ public class DecimalType implements ColumnType {
         public byte[] serialize(BigDecimal bigDecimal) {
             int scale = bigDecimal.scale();
             byte[] bytes = Notations.join(Notations.toIntBytes(scale), bigDecimal.unscaledValue().toByteArray());
-            return  Notations.join(Notations.toIntBytes(bytes.length), bytes);
+            return Notations.join(Notations.toIntBytes(bytes.length), bytes);
         }
 
         @Override

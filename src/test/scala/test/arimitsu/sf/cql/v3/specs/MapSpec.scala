@@ -75,7 +75,7 @@ class MapSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstanc
       rows.rowsCount should be(1)
       val data = rows.rowsContent.get(0).get(0)
       data.name should be(MAP_COLUMN_NAME)
-      data.value.isInstanceOf[util.Map[_,_]] should be(true)
+      data.value.isInstanceOf[util.Map[_, _]] should be(true)
       data.value.asInstanceOf[util.Map[String, String]] should be(TEST_DATA)
     }
     val deleteQuery = s"DELETE ${MAP_COLUMN_NAME} FROM test.test_table1 where id = ?"

@@ -3,7 +3,7 @@ package test.arimitsu.sf.cql.v3.specs
 import java.math.{BigDecimal, BigInteger}
 import java.nio.ByteBuffer
 
-import arimitsu.sf.cql.v3.columntype.{Serializer, ColumnTypes}
+import arimitsu.sf.cql.v3.columntype.ColumnTypes
 import arimitsu.sf.cql.v3.message.request.QueryParameters.ListValues
 import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, QueryFlags, QueryParameters}
 import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}

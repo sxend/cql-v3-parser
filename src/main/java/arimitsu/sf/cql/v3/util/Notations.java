@@ -209,7 +209,8 @@ public class Notations {
         int length = bytes.length;
         return join(toShortBytes((short) length), bytes);
     }
-    public static byte[] toStringBytes(String str){
+
+    public static byte[] toStringBytes(String str) {
         byte[] bytes;
         try {
             bytes = str.getBytes(STRING_CHARSET);

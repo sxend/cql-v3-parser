@@ -1,17 +1,17 @@
 package test.arimitsu.sf.cql.v3.specs
 
 import arimitsu.sf.cql.v3.columntype.ColumnTypes
+import arimitsu.sf.cql.v3.message.request.QueryParameters.{Builder, ListValues}
+import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, QueryFlags}
+import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
 import arimitsu.sf.cql.v3.{Consistency, Opcode}
-import arimitsu.sf.cql.v3.message.request.{Execute, QueryFlags, Prepare}
-import arimitsu.sf.cql.v3.message.request.QueryParameters.{ListValues, Builder}
-import arimitsu.sf.cql.v3.message.response.result.{Rows, Prepared}
-import org.scalatest.{OneInstancePerTest, BeforeAndAfter, Matchers, FunSuite}
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers, OneInstancePerTest}
 import test.arimitsu.sf.cql.v3.ClientManager
 
 /**
  * Created by sxend on 14/10/13.
  */
-class VarcharSpec  extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest{
+class VarcharSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   test("prepare, update, select check for [varchar]") {
     val client = ClientManager.getInstance.startup()
     val prepareQuery = s"update test.test_table1 set varchar_column = ? where id = ?"
@@ -37,10 +37,10 @@ class VarcharSpec  extends FunSuite with Matchers with BeforeAndAfter with OneIn
     message shouldBe a[arimitsu.sf.cql.v3.message.response.result.Void]
 
     val selectQuery = s"select varchar_column from test.test_table1 where id = ?"
-    val selectPrepare= new Prepare(selectQuery)
+    val selectPrepare = new Prepare(selectQuery)
     message = client.request(Opcode.PREPARE, selectPrepare.toBody)
     message shouldBe a[Prepared]
-    val selectPrepared= message.asInstanceOf[Prepared]
+    val selectPrepared = message.asInstanceOf[Prepared]
     val selectQueryId = selectPrepared.id
     val selectExecute = {
       val param = new Builder()

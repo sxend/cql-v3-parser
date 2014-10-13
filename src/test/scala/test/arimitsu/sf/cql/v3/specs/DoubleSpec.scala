@@ -1,11 +1,11 @@
 package test.arimitsu.sf.cql.v3.specs
 
-import arimitsu.sf.cql.v3.{Consistency, Opcode}
 import arimitsu.sf.cql.v3.columntype.ColumnTypes
-import arimitsu.sf.cql.v3.message.request.{Execute, QueryFlags, QueryParameters, Prepare}
 import arimitsu.sf.cql.v3.message.request.QueryParameters.ListValues
-import arimitsu.sf.cql.v3.message.response.result.{Rows, Prepared}
-import org.scalatest.{OneInstancePerTest, BeforeAndAfter, Matchers, FunSuite}
+import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, QueryFlags, QueryParameters}
+import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
+import arimitsu.sf.cql.v3.{Consistency, Opcode}
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers, OneInstancePerTest}
 import test.arimitsu.sf.cql.v3.ClientManager
 
 /**
@@ -13,7 +13,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
  */
 class DoubleSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val DOUBLE_COLUMN_NAME = "double_column"
-  val TEST_DATA:Double = Math.random() * 100d
+  val TEST_DATA: Double = Math.random() * 100d
   test(s"$DOUBLE_COLUMN_NAME insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${DOUBLE_COLUMN_NAME}) VALUES(?,?)"

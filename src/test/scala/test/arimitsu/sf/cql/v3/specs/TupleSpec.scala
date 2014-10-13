@@ -8,7 +8,7 @@ import arimitsu.sf.cql.v3.message.request.QueryParameters.ListValues
 import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, QueryFlags, QueryParameters}
 import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
 import arimitsu.sf.cql.v3.{Consistency, Opcode}
-import org.scalatest.{Ignore, BeforeAndAfter, FunSuite, Matchers, OneInstancePerTest}
+import org.scalatest.{BeforeAndAfter, FunSuite, Ignore, Matchers, OneInstancePerTest}
 import test.arimitsu.sf.cql.v3.ClientManager
 
 import scala.collection.JavaConverters._
