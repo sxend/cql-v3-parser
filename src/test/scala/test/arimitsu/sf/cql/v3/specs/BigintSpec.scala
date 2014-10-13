@@ -14,7 +14,7 @@ import test.arimitsu.sf.cql.v3.ClientManager
 class BigintSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   val BIGINT_COLUMN_NAME = "bigint_column"
   val TEST_DATA = 1000000L
-  test("ascii column insert, select and delete") {
+  test(s"bigint column insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${BIGINT_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {

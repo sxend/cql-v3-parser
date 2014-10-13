@@ -21,7 +21,7 @@ class DecimalSpec extends FunSuite with Matchers with BeforeAndAfter with OneIns
     buffer.putLong(123456L)
     new BigDecimal(new BigInteger(buffer.array()), 0)
   }
-  test("blob_column insert, select and delete") {
+  test("decimal insert, select and delete") {
     val client = ClientManager.getInstance.startup()
     val insertQuery = s"INSERT INTO test.test_table1 (id, ${DECIMAL_COLUMN_NAME}) VALUES(?,?)"
     val insertPreparedId = {
