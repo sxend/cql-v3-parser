@@ -6,9 +6,8 @@ public class FloatType implements ColumnType {
     private static final Serializer<Float> SERIALIZER = new Serializer<Float>() {
         @Override
         public byte[] serialize(Float aFloat) {
-            int arraySize = Float.SIZE / Byte.SIZE;
-            ByteBuffer buffer = ByteBuffer.allocate(arraySize);
-            return buffer.putFloat(aFloat).array();
+            ByteBuffer buffer = ByteBuffer.allocate(Float.BYTES + Integer.BYTES);
+            return buffer.putInt(Float.BYTES).putFloat(aFloat).array();
         }
 
         @Override
