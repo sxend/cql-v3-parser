@@ -77,7 +77,6 @@ class SetSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstanc
       data.name should be(SET_COLUMN_NAME)
       data.value.isInstanceOf[util.Set[_]] should be(true)
       data.value.asInstanceOf[util.Set[String]] should be(TEST_DATA)
-      println(data.value.asInstanceOf[util.Set[String]])
     }
     val deleteQuery = s"DELETE ${SET_COLUMN_NAME} FROM test.test_table1 where id = ?"
     val deletePreparedId = {
