@@ -1,6 +1,6 @@
 package test.arimitsu.sf.cql.v3.specs
 
-import org.scalatest.{OneInstancePerTest, BeforeAndAfter, Matchers, FunSuite}
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers, OneInstancePerTest}
 import test.arimitsu.sf.cql.v3.ClientManager
 
 /**
@@ -8,7 +8,9 @@ import test.arimitsu.sf.cql.v3.ClientManager
  */
 class AsciiSpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
   test("ascii spec") {
-    val client = ClientManager.getInstance
+    val client = ClientManager.getInstance.startup()
+
+    client.close()
   }
 
 }

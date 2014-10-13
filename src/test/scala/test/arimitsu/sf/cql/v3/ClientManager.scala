@@ -6,10 +6,10 @@ import java.nio.channels.SocketChannel
 import java.util.ResourceBundle
 
 import arimitsu.sf.cql.v3.Frame.Header
-import arimitsu.sf.cql.v3.message.response.Ready
-import arimitsu.sf.cql.v3.{Opcode, Flags, Version, Frame, Compression, CQLVersion, CQLParser}
 import arimitsu.sf.cql.v3.compressor.NoneCompressor
+import arimitsu.sf.cql.v3.message.Message
 import arimitsu.sf.cql.v3.message.request.Startup
+import arimitsu.sf.cql.v3.{CQLParser, CQLVersion, Compression, Flags, Frame, Opcode, Version}
 
 /**
  * Created by sxend on 2014/09/30.
@@ -25,26 +25,47 @@ object ClientManager {
   }
 }
 
-class Client(val channel: SocketChannel, val streamId: Short = 0.toShort) {
-  private[v3] def next: Client = new Client(channel, (streamId + 1).toShort)
+class Client(channel: SocketChannel) {
+  val parser = new CQLParser().withCompressor(new NoneCompressor())
+  var counter: Short = 0.toShort
 
-  private[v3] def startup: Client ={
+  private[v3] def increment: Short = {
+    val count = counter
+    counter = (counter + 1).toShort
+    count
+  }
+
+  private[v3] def request(opcode: Opcode, body: Array[Byte]): Message = {
+    val streamId = this.increment
+    val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, streamId, opcode, body.length), body)
+    val writeBuffer = parser.frameToByteBuffer(frame)
+    this.channel.write(writeBuffer)
+    val readBuffer = ByteBuffer.allocate(4096)
+    this.channel.read(readBuffer)
+    readBuffer.flip()
+    val resultFrame = parser.byteBufferToFrame(readBuffer)
+    val message = parser.frameToMessage(resultFrame)
+    message
+  }
+
+  private[v3] def startup(): Client = {
+    val streamId = this.increment
     val parser = new CQLParser().withCompressor(new NoneCompressor())
-    val startupBuffer = {
-      val startup = new Startup(CQLVersion.CURRENT,Compression.NONE)
-      val body = startup.toBody
-      val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, this.streamId, Opcode.STARTUP, body.length), body)
-      parser.frameToByteBuffer(frame)
-    }
+    val startup = new Startup(CQLVersion.CURRENT, Compression.NONE)
+    val body = startup.toBody
+    val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, streamId, Opcode.STARTUP, body.length), body)
+    val startupBuffer = parser.frameToByteBuffer(frame)
     this.channel.write(startupBuffer)
     val readBuffer = ByteBuffer.allocate(4096)
     this.channel.read(readBuffer)
     readBuffer.flip()
     val resultFrame = parser.byteBufferToFrame(readBuffer)
     val message = parser.frameToMessage(resultFrame)
-    this.next
+    this
   }
 
-  private[v3] def close() = channel.close()
+  private[v3] def close(): Unit = {
+    channel.close()
+  }
 }
 

@@ -1,18 +1,13 @@
 package test.arimitsu.sf.cql.v3.specs
 
 import java.net.InetAddress
-import java.nio.ByteBuffer
 
-import arimitsu.sf.cql.v3.Frame.Header
 import arimitsu.sf.cql.v3._
-import arimitsu.sf.cql.v3.columntype.ColumnTypes
-import arimitsu.sf.cql.v3.compressor.NoneCompressor
 import arimitsu.sf.cql.v3.message.request.QueryParameters.{Builder, ListValues}
-import arimitsu.sf.cql.v3.message.request.{Execute, Prepare, Query, QueryFlags, Startup}
-import arimitsu.sf.cql.v3.message.response.Ready
-import arimitsu.sf.cql.v3.message.response.result.{Prepared, Rows}
+import arimitsu.sf.cql.v3.message.request.{Query, QueryFlags}
+import arimitsu.sf.cql.v3.message.response.result.Rows
 import arimitsu.sf.cql.v3.util.Notations
-import org.scalatest.{OneInstancePerTest, BeforeAndAfter, Matchers, FunSuite}
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers, OneInstancePerTest}
 import test.arimitsu.sf.cql.v3.ClientManager
 
 import scala.collection.JavaConversions._
@@ -20,26 +15,19 @@ import scala.collection.JavaConversions._
 /**
  * Created by sxend on 2014/10/02.
  */
-class QuerySpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest{
+class QuerySpec extends FunSuite with Matchers with BeforeAndAfter with OneInstancePerTest {
 
-  test("testdata response test") {
-    val client = ClientManager.getInstance.startup
-    val parser = new CQLParser().withCompressor(new NoneCompressor())
+  test("select all column") {
+    val client = ClientManager.getInstance.startup()
     val query = {
       val param = new Builder()
         .setConsistency(Consistency.ONE)
         .setFlags(QueryFlags.VALUES.mask)
         .setValues(new ListValues()).build()
-      new Query("select id,ascii_column,decimal_column,int_column,text_column,uuid_column,bigint_column,double_column,list_column,timestamp_column,varchar_column,blob_column,float_column,map_column,timeuuid_column,varint_column,boolean_column,inet_column,set_column from test.test_table1 where id = 1", param).toBody
+      new Query("select id,ascii_column,decimal_column,int_column,text_column,uuid_column,bigint_column,double_column,list_column,timestamp_column,varchar_column,blob_column,float_column,map_column,timeuuid_column,varint_column,boolean_column,inet_column,set_column from test.test_table1 where id = 1", param)
     }
-    val frame = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.QUERY, query.length), query)
-    client.channel.write(parser.frameToByteBuffer(frame))
-    val resultBuffer = ByteBuffer.allocate(4096)
-    client.channel.read(resultBuffer)
-    resultBuffer.flip()
-    val resultFrame = parser.byteBufferToFrame(resultBuffer)
-    val message = parser.frameToMessage(resultFrame)
-    message shouldBe a [Rows]
+    val message = client.request(Opcode.QUERY, query.toBody)
+    message shouldBe a[Rows]
     val rows = message.asInstanceOf[Rows]
     rows.rowsCount should be(1)
     val record = rows.rowsContent(0)
@@ -81,49 +69,7 @@ class QuerySpec extends FunSuite with Matchers with BeforeAndAfter with OneInsta
     record(17).value.toString should be(InetAddress.getByName("20.20.20.20").toString)
     record(18).name should be("set_column")
     record(18).value.asInstanceOf[java.util.Set[String]].toSet should be(Set("セットヴァリュー1", "セットヴァリュー2"))
+    client.close()
   }
-  test("update be") {
-    val client = ClientManager.getInstance.startup
-    val parser = new CQLParser().withCompressor(new NoneCompressor())
 
-    val pre = s"update test.test_table1 set varchar_column = ? where id = ?"
-    val body = {
-      val param = new Builder()
-        .setConsistency(Consistency.ONE)
-        .setFlags(QueryFlags.VALUES.mask)
-        .setValues(new ListValues()).build()
-      new Prepare(pre).toBody
-    }
-    val pframe = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.PREPARE, body.length), body)
-    client.channel.write(parser.frameToByteBuffer(pframe))
-    var resultBuffer = ByteBuffer.allocate(4096)
-    client.channel.read(resultBuffer)
-    resultBuffer.flip()
-    var resultFrame = parser.byteBufferToFrame(resultBuffer)
-    var message = parser.frameToMessage(resultFrame)
-    message shouldBe a [Prepared]
-    val prepared = message.asInstanceOf[Prepared]
-    val id = prepared.id
-    val varchar = "ｳﾞｧｰキャラカラム"
-    val updateBody = {
-      val param = new Builder()
-        .setConsistency(Consistency.ONE)
-        .setFlags(QueryFlags.VALUES.mask)
-        .setValues({
-        val list = new ListValues()
-        list.put(ColumnTypes.VARCHAR.builder.build(), varchar)
-        list.put(ColumnTypes.INT.builder.build(), 1)
-        list
-      }).build()
-      new Execute(id, param).toBody
-    }
-    val upframe = new Frame(new Header(Version.REQUEST, Flags.NONE, client.streamId, Opcode.EXECUTE, updateBody.length), updateBody)
-    client.channel.write(parser.frameToByteBuffer(upframe))
-    resultBuffer = ByteBuffer.allocate(4096)
-    client.channel.read(resultBuffer)
-    resultBuffer.flip()
-    resultFrame = parser.byteBufferToFrame(resultBuffer)
-    message = parser.frameToMessage(resultFrame)
-    message.isInstanceOf[arimitsu.sf.cql.v3.message.response.result.Void] should be(true)
-  }
 }
