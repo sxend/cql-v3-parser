@@ -48,7 +48,9 @@ public class QueryParameters {
 
     public byte[] toBytes() {
         byte[] bytes = join(toShortBytes(consistency.level), new byte[]{queryFlags});
-        bytes = join(bytes, values.toBytes());
+        if ((queryFlags & QueryFlags.VALUES.mask) == 1) {
+            bytes = join(bytes, values.toBytes());
+        }
         if (serialConsistency.isPresent()) {
             bytes = join(bytes, toLongBytes(serialConsistency.get().level));
         }
