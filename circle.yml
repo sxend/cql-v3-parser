@@ -13,14 +13,12 @@ machine:
     - docker
   java:
     version: oraclejdk8
-test:
-  post:
-    - sbt +package +doc
 deployment:
-  release:
+  staging:
     branch: master
     commands:
+      - sbt +package +doc
+  release:
+    branch: /release-.*/
+    commands:
       - sbt +publish
-notify:
-  webhooks:
-    - url: https://webhooks.gitter.im/e/92c1b68767111142aa0b
